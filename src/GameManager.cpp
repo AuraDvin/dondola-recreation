@@ -17,15 +17,6 @@ GameManager::GameManager() {
         window.close();
     }
 
-    updates[0] = &titleUpdate;
-    renders[0] = &titleRender;
-
-    updates[1] = &update;
-    renders[1] = &render;
-
-    updates[2] = &overUpdate;
-    renders[2] = &overRender;
-
     // set first update
     lastUpdate = clock_.getElapsedTime();
     goToScene(1);
@@ -50,9 +41,7 @@ void GameManager::update() {
         if (event.is<sf::Event::Closed>())
             window.close();
     }
-
 }
-
 
 
 void GameManager::render() {
@@ -67,9 +56,24 @@ void GameManager::render() {
     // Techincally the same as player position, but I digress
     sf::View cameraView(
         cameraPosition,
-        {(float) window.getSize().x, (float) window.getSize().y});
+        {
+            (float) window.getSize().x,
+            (float) window.getSize().y
+        });
     window.setView(cameraView);
     window.display();
+}
+
+void GameManager::titleUpdate() {
+}
+
+void GameManager::titleRender() {
+}
+
+void GameManager::overUpdate() {
+}
+
+void GameManager::overRender() {
 }
 
 void GameManager::goToScene(uint32_t scene) {

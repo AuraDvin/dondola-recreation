@@ -20,7 +20,7 @@ class GameManager {
     static constexpr uint32_t sceneCount = 3;
     uint32_t curScene = 1;
 
-    Player* player;
+    Player *player;
 
     //TODO:
     /*
@@ -32,26 +32,34 @@ class GameManager {
      * -> Game over screen should render text and buttons
      *
      */
-    void (GameManager::*updates[sceneCount])();
-    void (GameManager::*renders[sceneCount])();
 
     // Main
     void update();
+
     void render();
 
     // Title
-    void titleUpdate(){}
-    void titleRender(){}
+    void titleUpdate();
+
+    void titleRender();
 
     // Game Over
-    void overUpdate(){}
-    void overRender(){}
+    void overUpdate();
+
+    void overRender();
+
+    void (GameManager::*updates[sceneCount])(){titleUpdate, update, overUpdate};
+
+    void (GameManager::*renders[sceneCount])(){titleRender, render, overRender};
+
 public:
     GameManager();
+
     ~GameManager();
 
 
     void goToScene(uint32_t scene);
+
     void runCurrentScene();
 };
 
