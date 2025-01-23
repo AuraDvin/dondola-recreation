@@ -1,7 +1,3 @@
-//
-// Created by Edvin on 23. 01. 25.
-//
-
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
@@ -14,6 +10,9 @@ class GameManager {
     sf::RenderWindow window = sf::RenderWindow(
         sf::VideoMode({1280u, 720u}),
         "Dondola Game");
+
+    sf::Vector2f cameraPosition = {0, 0};
+    sf::Vector2f cameraVelocity = {0, 0};
 
     sf::Clock clock_;
     sf::Time lastUpdate;
@@ -33,15 +32,25 @@ class GameManager {
      * -> Game over screen should render text and buttons
      *
      */
+    void (GameManager::*updates[sceneCount])();
+    void (GameManager::*renders[sceneCount])();
+
+    // Main
+    void update();
+    void render();
+
+    // Title
+    void titleUpdate(){}
+    void titleRender(){}
+
+    // Game Over
+    void overUpdate(){}
+    void overRender(){}
 public:
     GameManager();
     ~GameManager();
 
-    void (GameManager::*updates[sceneCount])();
-    void (GameManager::*renders[sceneCount])();
 
-    void update();
-    void render();
     void goToScene(uint32_t scene);
     void runCurrentScene();
 };
