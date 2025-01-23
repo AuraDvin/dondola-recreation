@@ -4,6 +4,7 @@
 
 #include "GameManager.h"
 
+
 GameManager::GameManager() {
     window.setFramerateLimit(60);
     try {
@@ -13,11 +14,13 @@ GameManager::GameManager() {
         std::cout << "Actual what:\n" << e.what() << std::endl;
         window.close();
     }
+
+    updates[1] = &update;
+    renders[1] = &render;
+
+    // set first update
     lastUpdate = clock_.getElapsedTime();
-    while (window.isOpen()) {
-        update();
-        render();
-    }
+    runCurrentScene();
 }
 
 GameManager::~GameManager() {
@@ -37,4 +40,17 @@ void GameManager::render() {
     player->render();
     // Probably EnemyList like a linked list or even a vector or smth
     window.display();
+}
+
+void GameManager::goToScene(uint32_t scene) {
+    if (scene >= sceneCount)
+        throw std::runtime_error("Requested index is ouf of bounds");
+    this->curScene = scene;
+}
+
+void GameManager::runCurrentScene() {
+    while (window.isOpen()) {
+        (this->*updates[curScene])();
+        (this->*renders[curScene])();
+    }
 }
