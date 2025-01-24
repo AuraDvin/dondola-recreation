@@ -6,14 +6,23 @@
 
 #include "Player.h"
 
+struct Camera {
+    sf::Vector2f position = {0, 0};
+    sf::Vector2f velocity = {0, 0};
+    const double maxPlayerDistanceSquared = 400.0;
+    const double minPlayerDistanceSquared = 200.0;
+    const float accelerationRate = 200.f;
+    const float decelerationRate = 400.f;
+    const float maxSpeed = 300.f;
+    const double maxSpeedSquared = std::pow(maxSpeed, 2);
+};
+
 class GameManager {
     sf::RenderWindow window = sf::RenderWindow(
         sf::VideoMode({1280u, 720u}),
         "Dondola Game");
 
-    sf::Vector2f cameraPosition = {0, 0};
-    sf::Vector2f cameraVelocity = {0, 0};
-
+    Camera camera_;
     sf::Clock clock_;
     sf::Time lastUpdate;
 
@@ -21,6 +30,7 @@ class GameManager {
     uint32_t curScene = 1;
 
     Player *player;
+
 
     //TODO:
     /*

@@ -9,11 +9,10 @@ GameManager::GameManager() {
     try {
         player = new Player(
             window,
-            "assets/square.png",
-            cameraPosition);
+            "assets/square.png");
     } catch (const std::exception &e) {
-        std::cout << "Error occured while loading player, check assets\n";
-        std::cout << "Actual what:\n" << e.what() << std::endl;
+        std::cout << "Error occured while loading player, check assets"
+                << std::endl << "Actual what:\n" << e.what() << std::endl;
         window.close();
     }
 
@@ -29,16 +28,49 @@ GameManager::~GameManager() {
 
 void GameManager::update() {
     // Calculate deltaTime in seconds
-    sf::Time currentTime = clock_.getElapsedTime();
-    float deltaTime = (currentTime - lastUpdate).asSeconds();
+    const sf::Time currentTime = clock_.getElapsedTime();
+    const float deltaTime = (currentTime - lastUpdate).asSeconds();
     lastUpdate = currentTime;
 
     // Player update
     player->update(deltaTime);
 
+    // TODO: lerp camera to player
+    // current behavior is a bit "swigny" but its alright for now
+    const auto distSquared = (camera_.position - player->getPosition()).lengthSquared();
+    if (distSquared > camera_.maxPlayerDistanceSquared) {
+        const sf::Vector2f dir = (player->getPosition() - camera_.position).normalized();
+        camera_.velocity += dir * (deltaTime * camera_.accelerationRate);
+    }
+    // else if (100.f < distSquared < camera_.minPlayerDistanceSquared) {
+    //     camera_.velocity = {0.f, 0.f};
+    //     camera_.position = player->getPosition();
+    // }
+    else {
+        if (camera_.velocity.x > 0.f) {
+            camera_.velocity.x -= camera_.decelerationRate * deltaTime;
+            camera_.velocity.x = std::max(camera_.velocity.x, 0.f);
+        } else {
+            camera_.velocity.x += camera_.decelerationRate * deltaTime;
+            camera_.velocity.x = std::min(camera_.velocity.x, 0.f);
+        }
+        if (camera_.velocity.y > 0.f) {
+            camera_.velocity.y -= camera_.decelerationRate * deltaTime;
+            camera_.velocity.y = std::max(camera_.velocity.y, 0.f);
+        } else {
+            camera_.velocity.y += camera_.decelerationRate * deltaTime;
+            camera_.velocity.y = std::min(camera_.velocity.y, 0.f);
+        }
+    }
+
+    if (camera_.velocity.lengthSquared() > camera_.maxSpeedSquared) {
+        camera_.velocity = camera_.velocity.normalized() * camera_.maxSpeed;
+    }
+
+    camera_.position += camera_.velocity * deltaTime;
+
     while (const std::optional<sf::Event> ev = window.pollEvent()) {
-        sf::Event event = ev.value();
-        if (event.is<sf::Event::Closed>())
+        if (sf::Event event = ev.value(); event.is<sf::Event::Closed>())
             window.close();
     }
 }
@@ -55,10 +87,10 @@ void GameManager::render() {
     // Set the camera position
     // Techincally the same as player position, but I digress
     sf::View cameraView(
-        cameraPosition,
+        camera_.position,
         {
-            (float) window.getSize().x,
-            (float) window.getSize().y
+            static_cast<float>(window.getSize().x),
+            static_cast<float>(window.getSize().y)
         });
     window.setView(cameraView);
     window.display();
@@ -76,7 +108,7 @@ void GameManager::overUpdate() {
 void GameManager::overRender() {
 }
 
-void GameManager::goToScene(uint32_t scene) {
+void GameManager::goToScene(const uint32_t scene) {
     if (scene >= sceneCount) {
         window.close();
         throw std::runtime_error("Requested index of scene: "
