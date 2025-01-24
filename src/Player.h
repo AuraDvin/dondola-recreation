@@ -1,5 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <cmath>
 #include <cstdint>
 
 #include "SFML/Graphics.hpp"
@@ -16,16 +17,21 @@ class Player {
     sf::Sprite *sprite_;
 
     sf::RenderWindow *window;
-    sf::Vector2f *cameraPos;
 
+    const float accelerationRate = 200.f;
+    const float decelerationRate = 300.f;
+    const float maxSpeed = 300.f;
+    const double maxSpeedSquared = std::pow(maxSpeed, 2);
+    const sf::Angle phi = sf::radians(M_PI / 8);
 public:
     explicit Player(sf::RenderWindow &window,
-                    const std::string &texturePath,
-                    sf::Vector2f &cameraPosition);
+                    const std::string &texturePath);
 
     void render() const;
 
     void update(float dt);
+
+    sf::Vector2f getPosition() const { return position; }
 };
 
 
