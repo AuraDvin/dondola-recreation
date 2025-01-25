@@ -12,6 +12,9 @@ I am thinking of adding files that will allow building with VSC or just no IDE t
 All the steps are in `CMakeLists.txt`, for VSC I could make settings, tasks and launch files too that do the same thing. 
 And possibly just some kind of script that can build the project with just one click... tho I'll think about it.
 # Todo: 
+- [ ] Camera
+  - [x] Follows player
+  - [ ] Smooth animation for better feel  
 - [ ] Player
   - [x] Moves left and right at an angle
   - [ ] Avoids enemies
