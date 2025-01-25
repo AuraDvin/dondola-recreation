@@ -5,8 +5,8 @@ void Enemy::setSpawn() {
     srand(static_cast<unsigned>(time(NULL)));
     float x, y;
     do {
-         x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-         y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     } while (!(x < 0.2f || x > 0.8f || y < 0.2f || y > 0.2f));
 
     const sf::Vector2f playerPos = player->getPosition();
@@ -19,6 +19,10 @@ void Enemy::setSpawn() {
     y = minY + y * (maxY - minY);
     sprite_->setPosition({x, y});
     direction = playerPos - sprite_->getPosition();
+}
+
+void Enemy::checkInBounds() {
+    outOfBounds = (player->getPosition() - sprite_->getPosition()).lengthSquared() >= maxDist;
 }
 
 void Enemy::init(Player &pylr, sf::RenderWindow &rw) {
@@ -55,4 +59,8 @@ void Enemy::update(const float dt) {
     }
 
     sprite_->setPosition(sprite_->getPosition() + velocity * dt);
+    checkInBounds();
 }
+
+Player *Enemy::player = nullptr;
+sf::RenderWindow *Enemy::render_window_ = nullptr;
