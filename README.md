@@ -13,11 +13,14 @@ All the steps are in `CMakeLists.txt`, for VSC I could make settings, tasks and 
 And possibly just some kind of script that can build the project with just one click... tho I'll think about it.
 # Todo: 
 - [ ] Player
-  - [ ] Moves left and right at an angle
+  - [x] Moves left and right at an angle
   - [ ] Avoids enemies
-  - [ ] Better movement (smooth rather than staggering)
+  - [x] Better movement (smooth rather than staggering)
 - [ ] Enemies
-  - [ ] Multiple types? 
+  - [ ] Multiple types?
+  - [ ] Spawning in allowed areas *currently untested*
+  - [x] Set direction
+  - [ ] Deleted when out of bounds/camera view
 - [ ] Highscore
   - [ ] Save and write scores to a binary file that can be read on game over screen
 ## Movement 
