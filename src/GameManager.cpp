@@ -4,6 +4,40 @@
 #include <iostream>
 
 
+void GameManager::updateCamera(const float deltaTime) {
+    const float distSquared = (camera_.position - player->getPosition()).lengthSquared();
+    if (distSquared > camera_.maxPlayerDistanceSquared) {
+        const sf::Vector2f dir = (player->getPosition() - camera_.position).normalized();
+        camera_.velocity += dir * (deltaTime * camera_.accelerationRate);
+    }
+    // else if (100.f < distSquared < camera_.minPlayerDistanceSquared) {
+    //     camera_.velocity = {0.f, 0.f};
+    //     camera_.position = player->getPosition();
+    // }
+    else {
+        if (camera_.velocity.x > 0.f) {
+            camera_.velocity.x -= camera_.decelerationRate * deltaTime;
+            camera_.velocity.x = std::max(camera_.velocity.x, 0.f);
+        } else {
+            camera_.velocity.x += camera_.decelerationRate * deltaTime;
+            camera_.velocity.x = std::min(camera_.velocity.x, 0.f);
+        }
+        if (camera_.velocity.y > 0.f) {
+            camera_.velocity.y -= camera_.decelerationRate * deltaTime;
+            camera_.velocity.y = std::max(camera_.velocity.y, 0.f);
+        } else {
+            camera_.velocity.y += camera_.decelerationRate * deltaTime;
+            camera_.velocity.y = std::min(camera_.velocity.y, 0.f);
+        }
+    }
+
+    if (camera_.velocity.lengthSquared() > camera_.maxSpeedSquared) {
+        camera_.velocity = camera_.velocity.normalized() * camera_.maxSpeed;
+    }
+
+    camera_.position += camera_.velocity * deltaTime;
+}
+
 GameManager::GameManager() {
     window.setFramerateLimit(0);
     try {
@@ -37,37 +71,7 @@ void GameManager::update() {
 
     // TODO: lerp camera to player
     // current behavior is a bit "swigny" but its alright for now
-    const auto distSquared = (camera_.position - player->getPosition()).lengthSquared();
-    if (distSquared > camera_.maxPlayerDistanceSquared) {
-        const sf::Vector2f dir = (player->getPosition() - camera_.position).normalized();
-        camera_.velocity += dir * (deltaTime * camera_.accelerationRate);
-    }
-    // else if (100.f < distSquared < camera_.minPlayerDistanceSquared) {
-    //     camera_.velocity = {0.f, 0.f};
-    //     camera_.position = player->getPosition();
-    // }
-    else {
-        if (camera_.velocity.x > 0.f) {
-            camera_.velocity.x -= camera_.decelerationRate * deltaTime;
-            camera_.velocity.x = std::max(camera_.velocity.x, 0.f);
-        } else {
-            camera_.velocity.x += camera_.decelerationRate * deltaTime;
-            camera_.velocity.x = std::min(camera_.velocity.x, 0.f);
-        }
-        if (camera_.velocity.y > 0.f) {
-            camera_.velocity.y -= camera_.decelerationRate * deltaTime;
-            camera_.velocity.y = std::max(camera_.velocity.y, 0.f);
-        } else {
-            camera_.velocity.y += camera_.decelerationRate * deltaTime;
-            camera_.velocity.y = std::min(camera_.velocity.y, 0.f);
-        }
-    }
-
-    if (camera_.velocity.lengthSquared() > camera_.maxSpeedSquared) {
-        camera_.velocity = camera_.velocity.normalized() * camera_.maxSpeed;
-    }
-
-    camera_.position += camera_.velocity * deltaTime;
+    updateCamera(deltaTime);
 
     while (const std::optional<sf::Event> ev = window.pollEvent()) {
         if (sf::Event event = ev.value(); event.is<sf::Event::Closed>())
@@ -86,7 +90,7 @@ void GameManager::render() {
 
     // Set the camera position
     // Techincally the same as player position, but I digress
-    sf::View cameraView(
+    const sf::View cameraView(
         camera_.position,
         {
             static_cast<float>(window.getSize().x),

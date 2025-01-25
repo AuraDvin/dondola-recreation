@@ -62,6 +62,8 @@ class GameManager {
 
     void (GameManager::*renders[sceneCount])(){titleRender, render, overRender};
 
+    void updateCamera(float deltaTime);
+
 public:
     GameManager();
 
