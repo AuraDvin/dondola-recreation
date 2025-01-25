@@ -12,8 +12,8 @@ class Player {
     sf::Vector2f position;
     sf::Vector2f playerVelocity;
 
-    sf::IntRect *rect_;
-    sf::Texture *texture_;
+    sf::IntRect rect_;
+    sf::Texture texture_;
     sf::Sprite *sprite_;
 
     sf::RenderWindow *window;
@@ -24,8 +24,9 @@ class Player {
     const double maxSpeedSquared = std::pow(maxSpeed, 2);
     const sf::Angle phi = sf::radians(M_PI / 8);
 public:
-    explicit Player(sf::RenderWindow &window,
+    explicit Player(sf::RenderWindow &renderWindow,
                     const std::string &texturePath);
+    ~Player();
 
     void render() const;
 
