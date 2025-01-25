@@ -20,7 +20,9 @@ add_executable(dondolagame_recreation main.cpp
         src/GameManager.cpp
         src/GameManager.h
         src/Player.cpp
-        src/Player.h)
+        src/Player.h
+        src/Enemy.cpp
+        src/Enemy.h)
 target_link_libraries(dondolagame_recreation PRIVATE SFML::Graphics)
 
 # Create a custom command to copy the assets
