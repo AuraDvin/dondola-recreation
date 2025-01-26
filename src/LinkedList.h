@@ -1,17 +1,13 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include <cstdint>
-
-//TODO:
-// * Fix the iterator ig
-// * idk what's wrong with it it seems to be written just fine
+#include <iostream>
 
 template<typename T>
 struct Node {
     T val;
     Node *next = nullptr;
 };
-
 
 template<typename T>
 class LinkedList {
@@ -35,9 +31,7 @@ public:
     void add(T x) {
         length++;
         if (start == nullptr) {
-            start = new Node<T>;
-            start->val = x;
-            start->next = nullptr;
+            start = new Node<T>{x, nullptr};
             return;
         }
 
@@ -45,38 +39,42 @@ public:
         while (tmp->next != nullptr) {
             tmp = tmp->next;
         }
-        tmp->next = new Node<T>;
-        tmp->next->val = x;
-        tmp->next->next = nullptr;
+        tmp->next = new Node<T>{x, nullptr};
     }
 
     Node<T> *find(T x) {
-        if (start == nullptr) {
-            return nullptr;
+        Node<T> *current = start;
+        while (current != nullptr) {
+            if (current->val == x) {
+                return current;
+            }
+            current = current->next;
         }
-
-        if (start.val == x) {
-            return start;
-        }
-
-        Node<T> *prev = findPrev(x);
-        if (prev != nullptr) return prev->next;
         return nullptr;
     }
 
-
     void remove(T x) {
-        Node<T> *tmp = find(x);
-        if (tmp == nullptr) return;
-        if (tmp == start) {
+        if (start == nullptr) return;
+
+        if (start->val == x) {
+            const Node<T> *tmp = start;
             start = start->next;
             delete tmp;
             length--;
             return;
         }
-        Node<T> *prev = findPrev(x);
-        prev->next = tmp->next;
-        delete tmp;
+
+        Node<T> *prev = nullptr;
+        Node<T> *current = start;
+        while (current != nullptr && current->val != x) {
+            prev = current;
+            current = current->next;
+        }
+
+        if (current == nullptr) return; // Not found
+
+        prev->next = current->next;
+        delete current;
         length--;
     }
 
@@ -86,37 +84,36 @@ public:
         Node<T> *current;
 
     public:
-        explicit Iterator(Node<T> *start) : current(start) {
-        }
+        explicit Iterator(Node<T> *start) : current(start) {}
 
         T &operator*() { return current->val; }
 
         Iterator &operator++() {
-            current = current->next;
+            if (current != nullptr) {
+                current = current->next;
+            }
             return *this;
         }
 
-        bool operator!=(const Iterator &other) const { return current != other.current; }
+        bool operator!=(const Iterator &other) const {
+            return current != other.current;
+        }
     };
 
     Iterator begin() { return Iterator(start); }
     Iterator end() { return Iterator(nullptr); }
 
-
-private:
-    Node<T> *findPrev(T x) {
-        return findHelper(x, start);
+    void update(const float dt) {
+        for (auto &item : *this) {
+            item.update(dt);
+        }
     }
 
-    Node<T> *findHelper(T x, Node<T> &node) {
-        while (node != nullptr) {
-            if (node.next == nullptr) return nullptr;
-            if (node.next->val == x) return &node;
-            node = node.next;
+    void render(sf::RenderWindow &window) {
+        for (auto &item : *this) {
+            item.render(&window);
         }
-        return nullptr;
     }
 };
-
 
 #endif //LINKEDLIST_H
