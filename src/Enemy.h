@@ -52,6 +52,8 @@ public:
     void render(sf::RenderWindow *window) { window->draw(*sprite_); }
 
     bool isOutOfBounds() { return outOfBounds; }
+
+    uint32_t getID() { return id; }
 };
 
 
