@@ -5,6 +5,8 @@
 
 
 class Enemy {
+    uint32_t id = 0;
+
     sf::Sprite *sprite_;
     sf::Texture texture_;
     sf::IntRect rect_;
@@ -36,9 +38,12 @@ public:
     // ReSharper disable once CppDFAConstantConditions
     static bool isInitialized() { return player == nullptr || render_window_ == nullptr; }
 
-    Enemy(const Enemy &copy);
+    bool operator==(const Enemy &other) const { return id == other.id; }
+    bool operator!=(const Enemy &other) const { return !operator==(other); }
 
-    Enemy(const std::string &spritePath);
+    Enemy(uint32_t id, const Enemy &copy);
+
+    Enemy(uint32_t id, const std::string &spritePath);
 
     sf::Vector2f getPosition() const { return sprite_->getPosition(); }
 

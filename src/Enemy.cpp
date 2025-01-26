@@ -2,7 +2,6 @@
 
 
 void Enemy::setSpawn() {
-    srand(static_cast<unsigned>(time(NULL)));
     float x, y;
     do {
         x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
@@ -32,8 +31,9 @@ void Enemy::init(Player &pylr, sf::RenderWindow &rw) {
 }
 
 
-Enemy::Enemy(const Enemy &copy) {
+Enemy::Enemy(uint32_t id, const Enemy &copy) {
     if (!isInitialized()) throw std::runtime_error("static fields uninitalized");
+    this->id = id;
     this->sprite_ = new sf::Sprite(*copy.sprite_);
     this->texture_ = copy.texture_;
     this->rect_ = copy.rect_;
@@ -41,8 +41,10 @@ Enemy::Enemy(const Enemy &copy) {
     setSpawn();
 }
 
-Enemy::Enemy(const std::string &spritePath) {
+
+Enemy::Enemy(uint32_t id, const std::string &spritePath) {
     if (!isInitialized()) throw std::runtime_error("static fields uninitalized");
+    this->id = id;
     this->texture_ = sf::Texture(spritePath, false);
     this->rect_ = sf::IntRect({0, 0}, {42, 42});
     this->sprite_ = new sf::Sprite(this->texture_, this->rect_);
