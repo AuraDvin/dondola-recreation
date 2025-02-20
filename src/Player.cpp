@@ -23,12 +23,14 @@ void Player::render() const {
 void Player::update(const float dt) {
     // maxSpeedSquare is used for comparison,
     // apparently it's faster
-
-    sf::Vector2f acceleration = {0.f, 0.f};
-
     const bool left = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
     const bool right = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
+    handleMovement(dt, left, right);
 
+}
+
+void Player::handleMovement(const float dt, const bool left, const bool right) {
+    sf::Vector2f acceleration = {0.f, 0.f};
     // Only go left and right
     // Then angle accordingly
     if (left) {
@@ -64,7 +66,7 @@ void Player::update(const float dt) {
         playerVelocity = playerVelocity.normalized() * maxSpeed;
     }
 
-    sf::Vector2f rotated = playerVelocity.rotatedBy(phi);
+    const sf::Vector2f rotated = playerVelocity.rotatedBy(phi);
 
     position += rotated * dt;
 }

@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <iostream>
-
+#include <random>
 
 void GameManager::updateCamera(const float deltaTime) {
     const float distSquared = (camera_.position - player->getPosition()).lengthSquared();
@@ -39,6 +39,7 @@ void GameManager::updateCamera(const float deltaTime) {
 }
 
 GameManager::GameManager() {
+
     window.setFramerateLimit(0);
     try {
         player = new Player(
@@ -48,8 +49,18 @@ GameManager::GameManager() {
         std::cout << "Error occured while loading player, check assets"
                 << std::endl << "Actual what:\n" << e.what() << std::endl;
         window.close();
+        return;
     }
 
+    Enemy::init(player, window);
+
+    if (player) {
+        em = new EnemyManager(window, player);
+    } else {
+        std::cout << "Player initialization failed, cannot create EnemyManager" << std::endl;
+        window.close();
+        return;
+    }
     // set first update
     lastUpdate = clock_.getElapsedTime();
     goToScene(1);
@@ -57,6 +68,7 @@ GameManager::GameManager() {
 }
 
 GameManager::~GameManager() {
+    delete em;
     delete player;
 }
 
@@ -73,9 +85,16 @@ void GameManager::update() {
     // current behavior is a bit "swigny" but its alright for now
     updateCamera(deltaTime);
 
+    // Update enemies
+    em->update(deltaTime);
+
     while (const std::optional<sf::Event> ev = window.pollEvent()) {
         if (sf::Event event = ev.value(); event.is<sf::Event::Closed>())
             window.close();
+        if (isKeyPressed(sf::Keyboard::Key::L)) {
+            std::cout << "gonna spawn a rocket\n";
+            em->spawnEnemy();
+        }
     }
 }
 
@@ -86,7 +105,7 @@ void GameManager::render() {
     // iterate over all the sprites and render them
     player->render();
     // Probably EnemyList like a linked list or even a vector or smth
-
+    em->render(window);
 
     // Set the camera position
     // Techincally the same as player position, but I digress

@@ -1,9 +1,10 @@
 #include "EnemyManager.h"
 
 
-EnemyManager::EnemyManager(sf::RenderWindow &rw, Player &plyr) {
+EnemyManager::EnemyManager(sf::RenderWindow &rw, Player *plyr) {
     list = new LinkedList<Enemy>;
-    Enemy::init(plyr, rw);
+    // Enemy::init(plyr, rw);
+    std::cout << "Static fields set!\n";
     baseEnemy = new Enemy(0, "assets/square.png");
 }
 

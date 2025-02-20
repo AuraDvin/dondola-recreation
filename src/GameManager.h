@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "EnemyManager.h"
 #include "Player.h"
 
 struct Camera {
@@ -30,7 +31,7 @@ class GameManager {
     uint32_t curScene = 1;
 
     Player *player;
-
+    EnemyManager *em;
 
     //TODO:
     /*

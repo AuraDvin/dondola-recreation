@@ -14,7 +14,7 @@ class Enemy {
     sf::Vector2f direction;
     sf::Vector2f velocity;
 
-    static Player *player; // player reference
+    static Player *player_ptr; // player reference
     static sf::RenderWindow *render_window_; // render window reference
 
     bool outOfBounds = false;
@@ -25,18 +25,21 @@ class Enemy {
     const double maxSpeedSquared = std::pow(maxSpeed, 2);
 
     // define illegal spawns
-    const float illegalSpawnX[2]{-100.f, 100.f};
-    const float illegalSpawnY[2]{-100.f, 100.f};
+    const float illegalSpawnX[2]{-200.f, 200.f};
+    const float illegalSpawnY[2]{-200.f, 200.f};
+
+    const float spawnRadiusSquared = 40000.f;
 
     void setSpawn();
 
     void checkInBounds();
 
+
 public:
-    static void init(Player &pylr, sf::RenderWindow &rw);
+    static void init(Player *pylr, sf::RenderWindow &rw);
 
     // ReSharper disable once CppDFAConstantConditions
-    static bool isInitialized() { return player == nullptr || render_window_ == nullptr; }
+    static bool isUninitialized() { return player_ptr == nullptr || render_window_ == nullptr; }
 
     bool operator==(const Enemy &other) const { return id == other.id; }
     bool operator!=(const Enemy &other) const { return !operator==(other); }

@@ -15,7 +15,7 @@ class EnemyManager {
     Enemy *baseEnemy;
 
 public:
-    EnemyManager(sf::RenderWindow &rw, Player &plyr);
+    EnemyManager(sf::RenderWindow &rw, Player *plyr);
 
     ~EnemyManager();
 

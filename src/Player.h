@@ -33,6 +33,8 @@ public:
     void update(float dt);
 
     sf::Vector2f getPosition() const { return position; }
+
+    void handleMovement(float dt, bool left, bool right);
 };
 
 
