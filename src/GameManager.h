@@ -58,9 +58,16 @@ class GameManager {
 
     void overRender();
 
-    void (GameManager::*updates[sceneCount])(){titleUpdate, update, overUpdate};
+    void (GameManager::*updates[sceneCount])(){
+        &GameManager::titleUpdate,
+        &GameManager::update,
+        &GameManager::overUpdate};
 
-    void (GameManager::*renders[sceneCount])(){titleRender, render, overRender};
+    void (GameManager::*renders[sceneCount])(){
+        &GameManager::titleRender,
+        &GameManager::render,
+        &GameManager::overRender
+    };
 
     void updateCamera(float deltaTime);
 
