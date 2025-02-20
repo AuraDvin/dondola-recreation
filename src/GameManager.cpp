@@ -46,21 +46,15 @@ GameManager::GameManager() {
             window,
             "assets/square.png");
     } catch (const std::exception &e) {
-        std::cout << "Error occured while loading player, check assets"
+        std::cout << "Error occurred while loading player, check assets"
                 << std::endl << "Actual what:\n" << e.what() << std::endl;
         window.close();
         return;
     }
 
     Enemy::init(player, window);
+    em = new EnemyManager(window, player);
 
-    if (player) {
-        em = new EnemyManager(window, player);
-    } else {
-        std::cout << "Player initialization failed, cannot create EnemyManager" << std::endl;
-        window.close();
-        return;
-    }
     // set first update
     lastUpdate = clock_.getElapsedTime();
     goToScene(1);
@@ -82,7 +76,7 @@ void GameManager::update() {
     player->update(deltaTime);
 
     // TODO: lerp camera to player
-    // current behavior is a bit "swigny" but its alright for now
+    // current behavior is a bit "swing-y" but its alright for now
     updateCamera(deltaTime);
 
     // Update enemies
@@ -108,7 +102,7 @@ void GameManager::render() {
     em->render(window);
 
     // Set the camera position
-    // Techincally the same as player position, but I digress
+    // Technically the same as player position, but I digress
     const sf::View cameraView(
         camera_.position,
         {
