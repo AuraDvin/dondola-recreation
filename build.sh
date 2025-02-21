@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# FOR NOW... this script does not work at all. I tried my best but I don't think I have the understanding to finish it
+# Also made with AI so could be just completely wrong bcs AI sucks at writing code
+# If you know how to make this script feel free but for now I think I'll leave this as is and come back to it later
+# Peace
+
+
 BUILD_DIR="build"
 ASSETS_SOURCE_DIR="assets"
 ASSETS_OUTPUT_DIR="${BUILD_DIR}/assets"
@@ -37,6 +43,11 @@ check_system_sfml() {
         return 0
     fi
 
+    if [ -d "/mnt/c/SFML" ]; then
+        echo "SFML found (Windows - WSL)."
+        return 0
+    fi
+
     echo "SFML not found system-wide." >&2
     return 1
 }
@@ -48,8 +59,13 @@ if [ -d "${SFML_DIR}" ]; then
     SFML_LIB="-L${SFML_DIR}/lib"
 elif check_system_sfml; then
     echo "Using system-wide SFML installation." >&2
+    if [ -d "/mnt/c/SFML" ]; then
+        SFML_INCLUDE="-I/mnt/c/SFML/include"
+        SFML_LIB="-L/mnt/c/SFML/lib"
+    else
     SFML_INCLUDE=""
     SFML_LIB=""
+    fi
 else
     echo "Error: SFML not found in ${SFML_DIR} or system-wide." >&2
     echo "Please download SFML and place it in the lib directory or install it system-wide." >&2
@@ -76,7 +92,7 @@ if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
     fi
 else
     # Linux/macOS
-    echo "Compiling for Linux/macOS..." >&2
+    echo "Compiling for Linux/macOS/WSL..." >&2
     g++ -std=c++17 -o ${BUILD_DIR}/dondolagame_recreation \
         main.cpp src/GameManager.cpp src/Player.cpp src/Enemy.cpp src/EnemyManager.cpp \
         -Iinclude ${SFML_INCLUDE} \
