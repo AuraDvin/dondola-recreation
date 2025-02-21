@@ -18,6 +18,8 @@ struct Camera {
     const double maxSpeedSquared = std::pow(maxSpeed, 2);
 };
 
+
+
 class GameManager {
     sf::RenderWindow window = sf::RenderWindow(
         sf::VideoMode({1280u, 720u}),
@@ -33,15 +35,10 @@ class GameManager {
     Player *player;
     EnemyManager *em;
 
-    //TODO:
-    /*
-     * Scenes functionality
-     * I.E. when rendering and updating it will use the methods in a
-     * chosen scene:
-     * -> title should only render text and buttons
-     * -> Main screen should render health, enemies and the player
-     * -> Game over screen should render text and buttons
-     *
+    /*TODO:
+     * Main screen scene (buttons yay!)
+     * Main game UI (health, timer)
+     * Game over screen (restart button, leaderboard)
      */
 
     // Main
@@ -58,7 +55,7 @@ class GameManager {
     void overUpdate();
 
     void overRender();
-
+    //! ADD MORE SCENES HERE IF NECESSARY
     void (GameManager::*updates[sceneCount])(){
         &GameManager::titleUpdate,
         &GameManager::update,
@@ -76,7 +73,6 @@ public:
     GameManager();
 
     ~GameManager();
-
 
     void goToScene(uint32_t scene);
 

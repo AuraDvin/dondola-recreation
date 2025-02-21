@@ -5,7 +5,7 @@
 
 #include "Enemy.h"
 #include "LinkedList.h"
-
+#include "prg.h"
 
 class EnemyManager {
     float spawnPeriod = 2.f;
@@ -15,13 +15,13 @@ class EnemyManager {
     Enemy *baseEnemy;
 
 public:
-    EnemyManager(sf::RenderWindow &rw, Player *plyr);
+    EnemyManager();
 
     ~EnemyManager();
 
     void update(float dt);
 
-    void render(sf::RenderWindow &window);
+    void render(sf::RenderWindow &window) const;
 
     void spawnEnemy();
 

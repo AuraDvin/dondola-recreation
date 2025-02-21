@@ -5,6 +5,7 @@
 #include <random>
 
 void GameManager::updateCamera(const float deltaTime) {
+    // ReSharper disable once CppTooWideScopeInitStatement
     const float distSquared = (camera_.position - player->getPosition()).lengthSquared();
     if (distSquared > camera_.maxPlayerDistanceSquared) {
         const sf::Vector2f dir = (player->getPosition() - camera_.position).normalized();
@@ -39,29 +40,34 @@ void GameManager::updateCamera(const float deltaTime) {
 }
 
 GameManager::GameManager() {
-
     window.setFramerateLimit(0);
     try {
         player = new Player(
             window,
             "assets/square.png");
     } catch (const std::exception &e) {
-        std::cout << "Error occurred while loading player, check assets"
-                << std::endl << "Actual what:\n" << e.what() << std::endl;
+        // Always debug on exception
+        debugger::debug_mode = true;
+        debugger::print_debug(
+            "Error occurred while loading player, check assets\n",
+            "Actual what: ", e.what()
+        );
         window.close();
-        return;
+        exit(EXIT_FAILURE);
     }
 
     Enemy::init(player, window);
-    em = new EnemyManager(window, player);
+    em = new EnemyManager();
 
     // set first update
     lastUpdate = clock_.getElapsedTime();
-    goToScene(1);
+    goToScene(1); //
     runCurrentScene();
 }
 
 GameManager::~GameManager() {
+    debugger::print_debug("GameManager::~GameManager()",
+        " deleting enemy list and player");
     delete em;
     delete player;
 }
@@ -77,7 +83,7 @@ void GameManager::update() {
 
     // TODO: lerp camera to player
     // current behavior is a bit "swing-y" but its alright for now
-    updateCamera(deltaTime);
+    // updateCamera(deltaTime);
 
     // Update enemies
     em->update(deltaTime);
@@ -86,7 +92,7 @@ void GameManager::update() {
         if (sf::Event event = ev.value(); event.is<sf::Event::Closed>())
             window.close();
         if (isKeyPressed(sf::Keyboard::Key::L)) {
-            std::cout << "gonna spawn a rocket\n";
+            debugger::print_debug("rocket spawn (keyboard event)");
             em->spawnEnemy();
         }
     }
@@ -96,9 +102,8 @@ void GameManager::update() {
 void GameManager::render() {
     window.clear(sf::Color::Black);
 
-    // iterate over all the sprites and render them
+    //TODO: Render background
     player->render();
-    // Probably EnemyList like a linked list or even a vector or smth
     em->render(window);
 
     // Set the camera position

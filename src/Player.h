@@ -35,6 +35,8 @@ public:
     sf::Vector2f getPosition() const { return position; }
 
     void handleMovement(float dt, bool left, bool right);
+
+    sf::Angle getAngle() const { return phi; }
 };
 
 
