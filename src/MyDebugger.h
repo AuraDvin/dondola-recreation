@@ -2,8 +2,8 @@
 // Created by aura on 21/02/25.
 //
 
-#ifndef MYDEBUGGER_H
-#define MYDEBUGGER_H
+#ifndef MY_DEBUGGER_H
+#define MY_DEBUGGER_H
 
 #include <iostream>
 
@@ -31,4 +31,4 @@ namespace debugger{
     }
 }
 
-#endif //MYDEBUGGER_H
+#endif //MY_DEBUGGER_H

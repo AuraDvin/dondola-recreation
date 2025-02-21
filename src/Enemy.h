@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "SFML/Graphics.hpp"
 #include "MyDebugger.h"
-#include <iostream>
 
 class Enemy {
     uint32_t id = 0;

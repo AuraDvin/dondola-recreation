@@ -1,11 +1,10 @@
-#ifndef ENEMYMANAGER_H
-#define ENEMYMANAGER_H
+#ifndef ENEMY_MANAGER_H
+#define ENEMY_MANAGER_H
 
 #include <unordered_set>
 
 #include "Enemy.h"
 #include "LinkedList.h"
-#include "prg.h"
 
 class EnemyManager {
     float spawnPeriod = 2.f;
@@ -29,4 +28,4 @@ public:
 };
 
 
-#endif //ENEMYMANAGER_H
+#endif //ENEMY_MANAGER_H

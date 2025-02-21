@@ -1,5 +1,5 @@
-#ifndef GAMEMANAGER_H
-#define GAMEMANAGER_H
+#ifndef GAME_MANAGER_H
+#define GAME_MANAGER_H
 
 
 #include <SFML/Graphics.hpp>
@@ -80,4 +80,4 @@ public:
 };
 
 
-#endif //GAMEMANAGER_H
+#endif //GAME_MANAGER_H

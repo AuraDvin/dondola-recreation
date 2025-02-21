@@ -1,6 +1,5 @@
 #include "EnemyManager.h"
-
-#include <random>
+#include "prg.h"
 
 
 EnemyManager::EnemyManager() {
