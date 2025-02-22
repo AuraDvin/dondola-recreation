@@ -2,6 +2,7 @@
 
 #include "src/GameManager.h"
 #include "src/MyDebugger.h"
+// #include "src/jsonReader.h"
 
 int main(const int argc, const char **argv) {
     srand(static_cast<unsigned>(time(nullptr)));
@@ -11,6 +12,9 @@ int main(const int argc, const char **argv) {
             debugger::print_debug("Debug mode enabled");
         }
     }
+    // Json reader demo
+    // const jsonReader jr("assets/dondola_test.json");
+    // std::cout << jr.json["frames"]["Sprite-0002 0."]["frame"];
     GameManager gm;
     return 0;
 }

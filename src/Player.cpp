@@ -15,14 +15,29 @@ Player::~Player() {
     delete sprite_;
 }
 
+void Player::setJson(const std::string &jsonPath) {
+    const jsonReader reader(jsonPath);
+    this->json = reader.json;
+}
+
 void Player::render() const {
     sprite_->setPosition(position);
+    // double at = animationTime % 100;
+    /*TODO
+     * The framerate should be 100ms (maybe read delay from the json)
+     * figure out current animation time -> get current frame
+     * set current frame to the sprite -> animation :D
+     * (Plus) track which animation should be playing
+     * i.e idle, left, right, etc.
+     * that should be all
+     */
     window->draw(*sprite_);
 }
 
 void Player::update(const float dt) {
     // maxSpeedSquare is used for comparison,
     // apparently it's faster
+    animationTime += dt;
     const bool left = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
     const bool right = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
     handleMovement(dt, left, right);

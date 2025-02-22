@@ -26,7 +26,9 @@ add_executable(dondolagame_recreation main.cpp
         src/EnemyManager.h
         src/EnemyManager.cpp
         src/prg.h
-        src/MyDebugger.h)
+        src/MyDebugger.h
+        src/jsonReader.cpp
+        src/jsonReader.h)
 target_link_libraries(dondolagame_recreation PRIVATE SFML::Graphics)
 
 # Create a custom command to copy the assets

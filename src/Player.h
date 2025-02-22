@@ -5,7 +5,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System/Vector2.hpp"
-
+#include "jsonReader.h"
 
 class Player {
     uint32_t health = 3;
@@ -23,10 +23,21 @@ class Player {
     const float maxSpeed = 300.f;
     const double maxSpeedSquared = std::pow(maxSpeed, 2);
     const sf::Angle phi = sf::radians(M_PI / 8);
+
+    /*TODO
+     * make the sprite an actual spriteSheet and animate it!
+     */
+    int animationFrame = 0;
+    int animationLength = 0;
+    double animationTime = 0;
+    nlohmann::json json;
+
 public:
     explicit Player(sf::RenderWindow &renderWindow,
                     const std::string &texturePath);
     ~Player();
+
+    void setJson(const std::string &jsonPath);
 
     void render() const;
 
