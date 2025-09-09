@@ -28,7 +28,10 @@ add_executable(dondolagame_recreation main.cpp
         src/prg.h
         src/MyDebugger.h
         src/jsonReader.cpp
-        src/jsonReader.h)
+        src/jsonReader.h
+        src/AnimationPlayer.cpp
+        src/AnimationPlayer.h
+        src/TextureLoader.h)
 target_link_libraries(dondolagame_recreation PRIVATE SFML::Graphics)
 
 # Create a custom command to copy the assets
