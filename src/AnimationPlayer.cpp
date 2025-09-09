@@ -52,7 +52,7 @@ void AnimationPlayer::playAnimation(const std::string &animationName) {
     currentAnimation = animations.at(animationName);
 }
 
-void AnimationPlayer::updateFrame(const double deltaTime) {
+void AnimationPlayer::updateAnimation(const double deltaTime) {
     if (paused) return;
     sinceLastFrame += deltaTime;
     if (currentFrameIndex < FIRST_FRAME) {

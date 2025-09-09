@@ -56,7 +56,7 @@ public:
     /// Changes frame index and loops/changes animation based on time passed
     /// Updates a local sinceLastTime variable with deltaTime. If deltaTime is very large
     /// it will at most update to the next (1) frame per function call!
-    void updateFrame(double deltaTime);
+    void updateAnimation(double deltaTime);
 
 private:
     int currentFrameIndex = 0;
