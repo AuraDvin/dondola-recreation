@@ -7,12 +7,6 @@
 #include "LinkedList.h"
 
 class EnemyManager {
-    float spawnPeriod = 2.f;
-    float accumulatedTime = 0.f;
-    std::unordered_set<uint32_t> notAllowedIds;
-    LinkedList<Enemy> *list;
-    Enemy *baseEnemy;
-
 public:
     EnemyManager();
 
@@ -20,11 +14,17 @@ public:
 
     void update(float dt);
 
-    void render(sf::RenderWindow &window) const;
+    void render(sf::RenderWindow &window);
 
     void spawnEnemy();
 
     uint32_t getID();
+private:
+    float spawnPeriodSeconds = 2.f;
+    float accumulatedTime = 0.f;
+    std::unordered_set<uint32_t> notAllowedIds;
+    LinkedList<Enemy> enemyList;
+    Enemy *baseEnemy;
 };
 
 

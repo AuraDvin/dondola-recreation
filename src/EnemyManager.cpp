@@ -2,13 +2,10 @@
 #include "prg.h"
 
 
-EnemyManager::EnemyManager() {
-    list = new LinkedList<Enemy>;
-    baseEnemy = new Enemy(0, "assets/square.png");
+EnemyManager::EnemyManager() : enemyList(LinkedList<Enemy>()), baseEnemy(new Enemy(0, "assets/square.png")){
 }
 
 EnemyManager::~EnemyManager() {
-    delete list;
     delete baseEnemy;
 }
 
@@ -17,16 +14,16 @@ EnemyManager::~EnemyManager() {
 // * Update
 
 void EnemyManager::update(const float dt) {
-    for (accumulatedTime += dt; accumulatedTime >= spawnPeriod; accumulatedTime -= spawnPeriod) {
+    for (accumulatedTime += dt; accumulatedTime >= spawnPeriodSeconds; accumulatedTime -= spawnPeriodSeconds) {
         spawnEnemy();
     }
 
-    for (const Node<Enemy> *i = list->getStart(); i != nullptr;) {
+    for (const Node<Enemy> *i = enemyList.getStart(); i != nullptr;) {
         if (i->val.isOutOfBounds()) {
             // id is now legal
             notAllowedIds.erase(i->val.getID());
             const Node<Enemy> *tmp = i->next;
-            list->remove(i->val);
+            enemyList.remove(i->val);
             i = tmp;
             continue;
         }
@@ -34,19 +31,19 @@ void EnemyManager::update(const float dt) {
     }
 
     // iterate and update all enemies
-    list->update(dt);
+    enemyList.update(dt);
 }
 
-void EnemyManager::render(sf::RenderWindow &window) const {
+void EnemyManager::render(sf::RenderWindow &window) {
     // iterate and draw all enemies
-    list->render(window);
+    enemyList.render(window);
 }
 
 // TODO: replace base enemy with random enemy type
 void EnemyManager::spawnEnemy() {
     // make enemy object and give it the id
     const uint32_t id = getID();
-    list->add(Enemy(id, *baseEnemy));
+    enemyList.add(Enemy(id, *baseEnemy));
 }
 
 // Generate and return a new ID
