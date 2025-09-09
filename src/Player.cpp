@@ -1,6 +1,8 @@
 // ReSharper disable CppTooWideScope
 #include "Player.h"
 
+#include "TextureLoader.h"
+
 Player::Player(sf::RenderWindow &renderWindow,
                const std::string &texturePath) {
     window = &renderWindow;
@@ -15,10 +17,6 @@ Player::~Player() {
     delete sprite_;
 }
 
-void Player::setJson(const std::string &jsonPath) {
-    const jsonReader reader(jsonPath);
-    this->json = reader.json;
-}
 
 void Player::render() const {
     sprite_->setPosition(position);
@@ -30,6 +28,7 @@ void Player::render() const {
      * (Plus) track which animation should be playing
      * i.e idle, left, right, etc.
      * that should be all
+     * I think only setting current frame from getting "nextRect" from animationplayer would suffice
      */
     window->draw(*sprite_);
 }

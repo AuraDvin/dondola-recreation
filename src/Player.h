@@ -30,14 +30,11 @@ class Player {
     int animationFrame = 0;
     int animationLength = 0;
     double animationTime = 0;
-    nlohmann::json json;
 
 public:
     explicit Player(sf::RenderWindow &renderWindow,
                     const std::string &texturePath);
     ~Player();
-
-    void setJson(const std::string &jsonPath);
 
     void render() const;
 
