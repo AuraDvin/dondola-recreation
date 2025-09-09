@@ -42,8 +42,9 @@ void GameManager::updateCamera(const float deltaTime) {
     camera_.position += camera_.velocity * deltaTime;
 }
 
-GameManager::GameManager() : window_(sf::VideoMode({1280u, 720u}), "Dondola Game") {
-    loadSpriteSheet();
+GameManager::GameManager() : window_(sf::VideoMode({1280u, 720u}), gameName) {
+    // TODO: make and load spritesheet
+    // loadSpriteSheet();
     window_.setFramerateLimit(UNLIMITED_FRAMERATE);
     try {
         player_ptr = new Player(

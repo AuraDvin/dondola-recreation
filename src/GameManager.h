@@ -19,6 +19,7 @@ struct Camera {
 };
 
 inline bool paused = false;
+inline const std::string gameName= "Dondola";
 
 class GameManager {
 public:
