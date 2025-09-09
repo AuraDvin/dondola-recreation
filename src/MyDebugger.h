@@ -7,8 +7,9 @@
 
 #include <iostream>
 
+
 namespace debugger {
-    inline bool debug_mode = true;
+    inline bool debug_mode = false;
 
     namespace {
         void print_debug_impl() {
