@@ -1,14 +1,17 @@
 #include "GameManager.h"
 
 #include <cmath>
-#include <iostream>
 #include <random>
+
+#include "TextureLoader.h"
+
+const int UNLIMITED_FRAMERATE = 0;
 
 void GameManager::updateCamera(const float deltaTime) {
     // ReSharper disable once CppTooWideScopeInitStatement
-    const float distSquared = (camera_.position - player->getPosition()).lengthSquared();
+    const float distSquared = (camera_.position - player_ptr->getPosition()).lengthSquared();
     if (distSquared > camera_.maxPlayerDistanceSquared) {
-        const sf::Vector2f dir = (player->getPosition() - camera_.position).normalized();
+        const sf::Vector2f dir = (player_ptr->getPosition() - camera_.position).normalized();
         camera_.velocity += dir * (deltaTime * camera_.accelerationRate);
     }
     // else if (100.f < distSquared < camera_.minPlayerDistanceSquared) {
@@ -39,11 +42,12 @@ void GameManager::updateCamera(const float deltaTime) {
     camera_.position += camera_.velocity * deltaTime;
 }
 
-GameManager::GameManager() {
-    window.setFramerateLimit(0);
+GameManager::GameManager() : window_(sf::VideoMode({1280u, 720u}), "Dondola Game") {
+    loadSpriteSheet();
+    window_.setFramerateLimit(UNLIMITED_FRAMERATE);
     try {
-        player = new Player(
-            window,
+        player_ptr = new Player(
+            window_,
             "assets/square.png");
     } catch (const std::exception &e) {
         // Always debug on exception
@@ -52,70 +56,70 @@ GameManager::GameManager() {
             "Error occurred while loading player, check assets\n",
             "Actual what: ", e.what()
         );
-        window.close();
+        window_.close();
         exit(EXIT_FAILURE);
     }
 
-    Enemy::init(player, window);
-    em = new EnemyManager();
+    Enemy::init(player_ptr, window_);
+    enemyManager = new EnemyManager();
 
     // set first update
-    lastUpdate = clock_.getElapsedTime();
+    lastUpdate_ = clock_.getElapsedTime();
     goToScene(1); //
     runCurrentScene();
 }
 
 GameManager::~GameManager() {
     debugger::print_debug("GameManager::~GameManager()",
-        " deleting enemy list and player");
-    delete em;
-    delete player;
+                          " deleting enemy list and player");
+    delete enemyManager;
+    delete player_ptr;
 }
 
 void GameManager::update() {
     // Calculate deltaTime in seconds
     const sf::Time currentTime = clock_.getElapsedTime();
-    const float deltaTime = (currentTime - lastUpdate).asSeconds();
-    lastUpdate = currentTime;
+    const float deltaTime = (currentTime - lastUpdate_).asSeconds();
+    lastUpdate_ = currentTime;
 
     // Player update
-    player->update(deltaTime);
+    player_ptr->update(deltaTime);
 
     // TODO: lerp camera to player
     // current behavior is a bit "swing-y" but its alright for now
     // updateCamera(deltaTime);
 
     // Update enemies
-    em->update(deltaTime);
+    enemyManager->update(deltaTime);
 
-    while (const std::optional<sf::Event> ev = window.pollEvent()) {
+    while (const std::optional<sf::Event> ev = window_.pollEvent()) {
         if (sf::Event event = ev.value(); event.is<sf::Event::Closed>())
-            window.close();
+            window_.close();
         if (isKeyPressed(sf::Keyboard::Key::L)) {
             debugger::print_debug("rocket spawn (keyboard event)");
-            em->spawnEnemy();
+            enemyManager->spawnEnemy();
         }
     }
 }
 
 
 void GameManager::render() {
-    window.clear(sf::Color::Black);
+    window_.clear(sf::Color::Black);
 
     //TODO: Render background
-    player->render();
-    em->render(window);
+    player_ptr->render();
+    enemyManager->render(window_);
 
     // Set the camera position
     // Technically the same as player position, but I digress
     const sf::View cameraView(
         camera_.position,
         {
-            static_cast<float>(window.getSize().x),
-            static_cast<float>(window.getSize().y)
+            static_cast<float>(window_.getSize().x),
+            static_cast<float>(window_.getSize().y)
         });
-    window.setView(cameraView);
-    window.display();
+    window_.setView(cameraView);
+    window_.display();
 }
 
 void GameManager::titleUpdate() {
@@ -130,21 +134,21 @@ void GameManager::overUpdate() {
 void GameManager::overRender() {
 }
 
-void GameManager::goToScene(const uint32_t scene) {
-    if (scene >= sceneCount) {
-        window.close();
+void GameManager::goToScene(const uint32_t sceneIdx) {
+    if (sceneIdx >= sceneCount) {
+        window_.close();
         throw std::runtime_error("Requested index of scene: "
-                                 + std::to_string(scene)
+                                 + std::to_string(sceneIdx)
                                  + " is ouf of bounds (max: "
                                  + std::to_string(sceneCount)
                                  + ") Remember to use uint32_t!");
     }
-    this->curScene = scene;
+    this->currentSceneIdx = sceneIdx;
 }
 
 void GameManager::runCurrentScene() {
-    while (window.isOpen()) {
-        (this->*updates[curScene])();
-        (this->*renders[curScene])();
+    while (window_.isOpen()) {
+        (this->*updates[currentSceneIdx])();
+        (this->*renders[currentSceneIdx])();
     }
 }

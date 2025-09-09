@@ -18,22 +18,33 @@ struct Camera {
     const double maxSpeedSquared = std::pow(maxSpeed, 2);
 };
 
-
+inline bool paused = false;
 
 class GameManager {
-    sf::RenderWindow window = sf::RenderWindow(
-        sf::VideoMode({1280u, 720u}),
-        "Dondola Game");
+public:
+    GameManager();
+
+    ~GameManager();
+
+    void goToScene(uint32_t sceneIdx);
+
+    void runCurrentScene();
+
+private:
+
+    void updateCamera(float deltaTime);
+
+    sf::RenderWindow window_;
 
     Camera camera_;
     sf::Clock clock_;
-    sf::Time lastUpdate;
+    sf::Time lastUpdate_;
 
     static constexpr uint32_t sceneCount = 3;
-    uint32_t curScene = 1;
+    uint32_t currentSceneIdx = 1;
 
-    Player *player;
-    EnemyManager *em;
+    Player *player_ptr;
+    EnemyManager *enemyManager;
 
     /*TODO:
      * Main screen scene (buttons yay!)
@@ -55,11 +66,13 @@ class GameManager {
     void overUpdate();
 
     void overRender();
+
     //! ADD MORE SCENES HERE IF NECESSARY
     void (GameManager::*updates[sceneCount])(){
         &GameManager::titleUpdate,
         &GameManager::update,
-        &GameManager::overUpdate};
+        &GameManager::overUpdate
+    };
 
     void (GameManager::*renders[sceneCount])(){
         &GameManager::titleRender,
@@ -67,16 +80,7 @@ class GameManager {
         &GameManager::overRender
     };
 
-    void updateCamera(float deltaTime);
 
-public:
-    GameManager();
-
-    ~GameManager();
-
-    void goToScene(uint32_t scene);
-
-    void runCurrentScene();
 };
 
 
