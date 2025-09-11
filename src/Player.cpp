@@ -11,9 +11,6 @@ Player::Player(sf::RenderWindow &renderWindow,
     texture_ = sf::Texture(texturePath, false);
     sprite_ = new sf::Sprite(texture_, rect_);
     sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
-    //TODO
-    // animationPlayer_ = AnimationPlayer("assets/framesData/player.json");
-    // animationPlayer_.playAnimation("idle");
 }
 
 Player::~Player() {
@@ -21,26 +18,29 @@ Player::~Player() {
 }
 
 
- ///TODO
- /// The framerate should be 100ms (maybe read delay from the json)
- /// figure out current animation time -> get current frame
- /// set current frame to the sprite -> animation :D
- /// (Plus) track which animation should be playing
- /// i.e idle, left, right, etc.
- /// that should be all
- /// I think only setting current frame from getting "nextRect" from animationplayer would suffice
 void Player::render() const {
     sprite_->setPosition(position);
+    // double at = animationTime % 100;
+    /*TODO
+     * The framerate should be 100ms (maybe read delay from the json)
+     * figure out current animation time -> get current frame
+     * set current frame to the sprite -> animation :D
+     * (Plus) track which animation should be playing
+     * i.e idle, left, right, etc.
+     * that should be all
+     * I think only setting current frame from getting "nextRect" from animationplayer would suffice
+     */
     window->draw(*sprite_);
 }
 
-void Player::update(const float deltaTime) {
-    const bool goingLeft = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
-    const bool goingRight = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
+void Player::update(const float dt) {
+    // maxSpeedSquare is used for comparison,
+    // apparently it's faster
+    animationTime += dt;
+    const bool left = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
+    const bool right = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
+    handleMovement(dt, left, right);
 
-    handleMovement(deltaTime, goingLeft, goingRight);
-    animationPlayer_.updateAnimation(deltaTime);
-    handleSpriteMirror(goingLeft, goingRight, sprite_->getScale());
 }
 
 void Player::handleMovement(const float dt, const bool left, const bool right) {
@@ -73,9 +73,6 @@ void Player::handleMovement(const float dt, const bool left, const bool right) {
             playerVelocity.y += decelerationRate * dt;
             if (playerVelocity.y > 0.f) playerVelocity.y = 0.f;
         }
-    } else {
-        //TODO
-        // animationPlayer_.playAnimation("move");
     }
 
     // Limit speed
@@ -86,16 +83,4 @@ void Player::handleMovement(const float dt, const bool left, const bool right) {
     const sf::Vector2f rotated = playerVelocity.rotatedBy(phi);
 
     position += rotated * dt;
-}
-
-// TODO: if you're stopping and go in the opposite it should probably have to handle it differently than just this
-void Player::handleSpriteMirror(const bool left, const bool right, sf::Vector2f scale) const {
-    if (changedDirection(left, right, scale)) {
-        scale.x *= -1;
-        sprite_->setScale(scale);
-    }
-}
-
-bool Player::changedDirection(const bool left, const bool right, const sf::Vector2f scale) {
-    return (left && !right && scale.x > 0) || (!left && right && scale.x < 0);
 }

@@ -3,28 +3,11 @@
 #include <cmath>
 #include <cstdint>
 
-#include "AnimationPlayer.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "jsonReader.h"
 
 class Player {
-public:
-    explicit Player(sf::RenderWindow &renderWindow,
-                    const std::string &texturePath);
-    ~Player();
-
-    void render() const;
-
-    void update(float deltaTime);
-
-    sf::Vector2f getPosition() const { return position; }
-
-    void handleMovement(float dt, bool left, bool right);
-
-    sf::Angle getAngle() const { return phi; }
-
-private:
     uint32_t health = 3;
     sf::Vector2f position;
     sf::Vector2f playerVelocity;
@@ -32,8 +15,6 @@ private:
     sf::IntRect rect_;
     sf::Texture texture_;
     sf::Sprite *sprite_;
-
-    AnimationPlayer animationPlayer_;
 
     sf::RenderWindow *window;
 
@@ -48,11 +29,22 @@ private:
      */
     int animationFrame = 0;
     int animationLength = 0;
+    double animationTime = 0;
 
-    void handleSpriteMirror(bool left, bool right, sf::Vector2f scale) const;
+public:
+    explicit Player(sf::RenderWindow &renderWindow,
+                    const std::string &texturePath);
+    ~Player();
 
-    static bool changedDirection(bool left, bool right, sf::Vector2f scale);
+    void render() const;
 
+    void update(float dt);
+
+    sf::Vector2f getPosition() const { return position; }
+
+    void handleMovement(float dt, bool left, bool right);
+
+    sf::Angle getAngle() const { return phi; }
 };
 
 
