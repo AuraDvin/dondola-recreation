@@ -19,7 +19,7 @@ struct Camera {
 };
 
 inline bool paused = false;
-inline const std::string gameName= "Dondola";
+inline const std::string gameName = "Dondola";
 
 class GameManager {
 public:
@@ -33,6 +33,7 @@ public:
 
 private:
     bool pausePressedOnLastUpdate = false;
+
     void updateCamera(float deltaTime);
 
     sf::RenderWindow window_;
@@ -82,7 +83,6 @@ private:
     };
 
     void handlePause();
-
 };
 
 

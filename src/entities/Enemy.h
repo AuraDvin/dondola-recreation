@@ -8,17 +8,15 @@ class Enemy {
     uint32_t id = 0;
 
     sf::Sprite *sprite_;
-    sf::Texture texture_;
     sf::IntRect rect_;
 
     sf::Vector2f direction;
     sf::Vector2f velocity;
 
     static Player *player_ptr; // player reference
-    static sf::RenderWindow *render_window_; // render window reference
 
     bool outOfBounds = false;
-    const double maxDist = std::pow(800.f , 2);
+    const double maxDist = std::pow(800.f, 2);
 
     const float accelerationRate = 200.f;
     const float maxSpeed = 300.f;
@@ -32,17 +30,20 @@ class Enemy {
     void checkInBounds();
 
 
-// ReSharper disable once CppDFAConstantConditions
+    // ReSharper disable once CppDFAConstantConditions
 public:
-    static void init(Player *player_ref_ptr, sf::RenderWindow &rw);
-    static bool isUninitialized() { return player_ptr == nullptr || render_window_ == nullptr; }
+    static void init(Player *player_ref_ptr);
+
+    static bool isUninitialized() { return player_ptr == nullptr; }
 
     bool operator==(const Enemy &other) const { return this->id == other.id; }
     bool operator!=(const Enemy &other) const { return !operator==(other); }
 
     Enemy(uint32_t id, const Enemy &copy);
-    Enemy(uint32_t id, const std::string &spritePath);
-    ~Enemy(){ debugger::print_debug("enemy id ", id, " out of bounds or collided"); }
+
+    Enemy(uint32_t id);
+
+    ~Enemy() { debugger::print_debug("enemy id ", id, " out of bounds or collided"); }
 
     uint32_t getID() const { return id; }
 
@@ -50,7 +51,7 @@ public:
 
     void update(float dt);
 
-    void render(sf::RenderWindow *window) const { window->draw(*sprite_); }
+    void render(sf::RenderWindow &window) const;
 
     bool isOutOfBounds() const { return outOfBounds; }
 };

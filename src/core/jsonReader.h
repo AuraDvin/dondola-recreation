@@ -4,8 +4,9 @@
 #include <fstream>
 
 class jsonReader {
-    public:
+public:
     nlohmann::json data;
+
     explicit jsonReader(const std::string &jsonPath) {
         std::ifstream file(jsonPath);
         if (!file.is_open()) {
@@ -15,7 +16,6 @@ class jsonReader {
         file.close();
     }
 };
-
 
 
 #endif //JSONREADER_H

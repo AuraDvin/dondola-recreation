@@ -42,6 +42,7 @@ public:
     AnimationPlayer() = default;
 
     ~AnimationPlayer() = default;
+
     /// <summary>
     /// Attempts to make a map of animations with:
     /// 'Animation Name' : 'Frames'

@@ -10,12 +10,12 @@
 
 class Player final : public Observer {
 public:
-    explicit Player(sf::RenderWindow &renderWindow,
-                    const std::string &texturePath,
-                    Subject &gamePausedSubjectRef);
+    explicit Player(
+        Subject &gamePausedSubjectRef);
+
     ~Player() override;
 
-    void render(sf::RenderWindow& rw) const;
+    void render(sf::RenderWindow &rw) const;
 
     void update(float dts);
 
@@ -36,7 +36,6 @@ private:
     sf::Vector2f playerVelocity;
 
     sf::IntRect rect_;
-    sf::Texture texture_;
     sf::Sprite *sprite_;
 
     AnimationPlayer animationPlayer_{};

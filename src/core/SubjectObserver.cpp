@@ -16,13 +16,13 @@ void Subject::removeObserver(Observer &observer) {
 }
 
 void Subject::send(const std::string &message) const {
-    for (Observer *observer : observers) {
+    for (Observer *observer: observers) {
         observer->onNotify(message);
     }
 }
 
 void Subject::send() const {
-    for (Observer *observer : observers) {
+    for (Observer *observer: observers) {
         observer->onNotify();
     }
 }

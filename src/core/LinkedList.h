@@ -52,7 +52,7 @@ public:
         return nullptr;
     }
 
-    Node<T>* remove(const T x) {
+    Node<T> *remove(const T x) {
         if (start == nullptr) return nullptr;
 
         if (start->val == x) {
@@ -84,7 +84,8 @@ public:
         Node<T> *current;
 
     public:
-        explicit Iterator(Node<T> *start) : current(start) {}
+        explicit Iterator(Node<T> *start) : current(start) {
+        }
 
         T &operator*() { return current->val; }
 
@@ -104,14 +105,14 @@ public:
     Iterator end() { return Iterator(nullptr); }
 
     void update(const float dt) {
-        for (auto &item : *this) {
+        for (auto &item: *this) {
             item.update(dt);
         }
     }
 
     void render(sf::RenderWindow &window) {
-        for (auto &item : *this) {
-            item.render(&window);
+        for (auto &item: *this) {
+            item.render(window);
         }
     }
 };

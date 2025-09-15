@@ -1,13 +1,11 @@
 #include "Player.h"
 #include "../TextureLoader.h"
 
-Player::Player(sf::RenderWindow &renderWindow,
-               const std::string &texturePath,
-               Subject &gamePausedSubjectRef) : Observer(gamePausedSubjectRef){
+Player::Player(
+    Subject &gamePausedSubjectRef) : Observer(gamePausedSubjectRef) {
     position = {0.5, 0.5};
-    texture_ = sf::Texture(texturePath, false);
     rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
-    sprite_ = new sf::Sprite(texture_, rect_);
+    sprite_ = new sf::Sprite(*Texture::spriteSheet, rect_);
     sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
     animationPlayer_ = AnimationPlayer(this->animationJsonPath);
     animationPlayer_.playAnimation("idle");
@@ -19,10 +17,10 @@ Player::~Player() {
 }
 
 
-void Player::render(sf::RenderWindow& rw) const {
+void Player::render(sf::RenderWindow &rw) const {
     sprite_->setPosition(position);
     sprite_->setTextureRect(rect_);
-    sprite_->setScale(sf::Vector2f(42.f/rect_.size.x, 42.f/rect_.size.y));
+    sprite_->setScale(sf::Vector2f(42.f / rect_.size.x, 42.f / rect_.size.y));
     rw.draw(*this->sprite_);
 }
 

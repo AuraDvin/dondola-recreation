@@ -20,6 +20,7 @@ public:
 
     /// Handlers for the Subject they're listening to
     virtual void onNotify() = 0;
+
     virtual void onNotify(const std::string &message) {
         throw std::logic_error("Not implemented");
     }

@@ -43,28 +43,12 @@ void GameManager::updateCamera(const float deltaTime) {
     camera_.position += camera_.velocity * deltaTime;
 }
 
-GameManager::GameManager() : window_(sf::VideoMode({1280u, 720u}), gameName) {
+GameManager::GameManager() : player_ptr(new Player(gamePausedSubject)),
+                             window_(sf::VideoMode({1280u, 720u}), gameName) {
     // TODO: make and load spritesheet
-    // loadSpriteSheet();
+    Texture::loadSpriteSheet();
     window_.setFramerateLimit(UNLIMITED_FRAMERATE);
-    try {
-        player_ptr = new Player(
-            window_,
-            "assets/square.png",
-            gamePausedSubject);
-
-    } catch (const std::exception &e) {
-        // Always debug on exception
-        debugger::debug_mode = true;
-        debugger::print_debug(
-            "Error occurred while loading player, check assets\n",
-            "Actual what: ", e.what()
-        );
-        window_.close();
-        exit(EXIT_FAILURE);
-    }
-
-    Enemy::init(player_ptr, window_);
+    Enemy::init(player_ptr);
     enemyManager = new EnemyManager(gamePausedSubject);
 
     // set first update
