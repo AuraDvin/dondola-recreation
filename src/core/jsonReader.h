@@ -1,7 +1,3 @@
-//
-// Created by aura on 22/02/25.
-//
-
 #ifndef JSONREADER_H
 #define JSONREADER_H
 #include <nlohmann/json.hpp>
@@ -10,7 +6,11 @@
 class jsonReader {
     public:
     nlohmann::json json;
-    explicit jsonReader(const std::string &jsonPath);
+    explicit jsonReader(const std::string &jsonPath) {
+        std::ifstream file(jsonPath, std::ifstream::binary);
+        file >> json;
+        file.close();
+    }
 };
 
 

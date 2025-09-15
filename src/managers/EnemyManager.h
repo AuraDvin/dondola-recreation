@@ -6,11 +6,11 @@
 #include "../entities/Enemy.h"
 #include "../core/LinkedList.h"
 
-class EnemyManager : Observer {
+class EnemyManager final : public Observer {
 public:
-    EnemyManager(Subject &gamePausedSubjRef);
+    explicit EnemyManager(Subject &gamePausedSubjectRef);
 
-    ~EnemyManager();
+    ~EnemyManager() override;
 
     void update(float dt);
 
@@ -19,8 +19,9 @@ public:
     void spawnEnemy();
 
     uint32_t getID();
+
 private:
-    bool gamePaused;
+    bool gamePaused = false;
     float spawnPeriodSeconds = 2.f;
     float accumulatedTime = 0.f;
 
@@ -29,7 +30,6 @@ private:
     std::unordered_set<uint32_t> notAllowedIds;
     LinkedList<Enemy> enemyList;
     Enemy *baseEnemy;
-
 };
 
 

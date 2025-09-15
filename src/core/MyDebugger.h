@@ -1,7 +1,3 @@
-//
-// Created by aura on 21/02/25.
-//
-
 #ifndef MY_DEBUGGER_H
 #define MY_DEBUGGER_H
 

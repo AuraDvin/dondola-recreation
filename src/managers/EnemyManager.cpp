@@ -3,7 +3,8 @@
 #include "../core/Subject.h"
 
 
-EnemyManager::EnemyManager(Subject &gamePausedSubjectRef) : enemyList(LinkedList<Enemy>()), baseEnemy(new Enemy(0, "assets/square.png")){
+EnemyManager::EnemyManager(Subject &gamePausedSubjectRef) : enemyList(LinkedList<Enemy>()),
+                                                            baseEnemy(new Enemy(0, "assets/square.png")) {
     /// When we're going to be making new Enemy objects we will need to pass it along.
     gamePausedSubjectRef.assignObserver(*this);
 }

@@ -1,7 +1,3 @@
-//
-// Created by aura on 12. 09. 25.
-//
-
 #ifndef DONDOLAGAME_RECREATION_OBSERVER_H
 #define DONDOLAGAME_RECREATION_OBSERVER_H
 #include <stdexcept>
