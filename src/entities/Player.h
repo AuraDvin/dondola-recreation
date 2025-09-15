@@ -5,8 +5,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System/Vector2.hpp"
-#include "jsonReader.h"
-#include "Observer.h"
+#include "../core/Observer.h"
 
 class Player : Observer {
 public:

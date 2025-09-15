@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "EnemyManager.h"
-#include "Player.h"
+#include "../entities/Player.h"
 
 struct Camera {
     sf::Vector2f position = {0, 0};

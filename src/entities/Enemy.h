@@ -2,7 +2,7 @@
 #define ENEMY_H
 #include "Player.h"
 #include "SFML/Graphics.hpp"
-#include "MyDebugger.h"
+#include "../core/MyDebugger.h"
 
 class Enemy {
     uint32_t id = 0;

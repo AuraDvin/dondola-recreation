@@ -1,7 +1,7 @@
 #ifndef DONDOLAGAME_RECREATION_TEXTURE_LOADER_H
 #define DONDOLAGAME_RECREATION_TEXTURE_LOADER_H
 
-#include "MyDebugger.h"
+#include "core/MyDebugger.h"
 #include "SFML/Graphics/Texture.hpp"
 
 /// Points to the texture of every object in the game on heap

@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "GameManager.h"
+#include "managers/GameManager.h"
 #include "SFML/Graphics/Rect.hpp"
 
 struct Frame {

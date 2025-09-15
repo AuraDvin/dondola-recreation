@@ -1,6 +1,6 @@
 #include "EnemyManager.h"
-#include "prg.h"
-#include "Subject.h"
+#include "../core/prg.h"
+#include "../core/Subject.h"
 
 
 EnemyManager::EnemyManager(Subject &gamePausedSubjectRef) : enemyList(LinkedList<Enemy>()), baseEnemy(new Enemy(0, "assets/square.png")){

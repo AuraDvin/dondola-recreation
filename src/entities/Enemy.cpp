@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "prg.h"
+#include "../core/prg.h"
 
 void Enemy::setSpawn() {
     std::uniform_real_distribution<> randomAngle(0.0, 2.0 * M_PI);

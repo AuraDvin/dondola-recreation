@@ -4,6 +4,8 @@
 
 #include "AnimationPlayer.h"
 
+#include "core/jsonReader.h"
+
 AnimationPlayer::AnimationPlayer(const std::string &jsonAnimationPath): currentFrameIndex(0), sinceLastFrame(0) {
     jsonReader reader(jsonAnimationPath);
     for (auto json = reader.json.begin(); json != reader.json.end(); ++json) {

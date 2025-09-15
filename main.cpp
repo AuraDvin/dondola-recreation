@@ -1,6 +1,6 @@
 #include <cstring>
-#include "src/GameManager.h"
-#include "src/MyDebugger.h"
+#include "src/managers/GameManager.h"
+#include "src/core/MyDebugger.h"
 
 int main(const int argc, const char **argv) {
     if (argc > 1) {

@@ -3,8 +3,8 @@
 #include <cmath>
 #include <random>
 
-#include "TextureLoader.h"
-#include "GamePaused.h"
+#include "../TextureLoader.h"
+#include "../GamePaused.h"
 
 constexpr int UNLIMITED_FRAMERATE = 0;
 

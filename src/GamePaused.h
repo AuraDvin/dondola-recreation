@@ -1,7 +1,7 @@
 #ifndef DONDOLAGAME_RECREATION_GAMEPAUSED_H
 #define DONDOLAGAME_RECREATION_GAMEPAUSED_H
 
-#include "Subject.h"
+#include "core/Subject.h"
 
 inline auto gamePausedSubject = Subject();
 

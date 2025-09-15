@@ -17,24 +17,24 @@ set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/assets")
 set(ASSETS_OUTPUT_DIR "${CMAKE_BINARY_DIR}/assets")
 
 add_executable(dondolagame_recreation main.cpp
-        src/GameManager.cpp
-        src/GameManager.h
-        src/Player.cpp
-        src/Player.h
-        src/Enemy.cpp
-        src/Enemy.h
-        src/EnemyManager.h
-        src/EnemyManager.cpp
-        src/prg.h
-        src/MyDebugger.h
-        src/jsonReader.cpp
-        src/jsonReader.h
+        src/managers/GameManager.cpp
+        src/managers/GameManager.h
+        src/entities/Player.cpp
+        src/entities/Player.h
+        src/entities/Enemy.cpp
+        src/entities/Enemy.h
+        src/managers/EnemyManager.h
+        src/managers/EnemyManager.cpp
+        src/core/prg.h
+        src/core/MyDebugger.h
+        src/core/jsonReader.cpp
+        src/core/jsonReader.h
         src/AnimationPlayer.cpp
         src/AnimationPlayer.h
         src/TextureLoader.h
-        src/Observer.h
-        src/Subject.h
-        src/SubjectObserver.cpp
+        src/core/Observer.h
+        src/core/Subject.h
+        src/core/SubjectObserver.cpp
         src/GamePaused.h)
 target_link_libraries(dondolagame_recreation PRIVATE SFML::Graphics)
 

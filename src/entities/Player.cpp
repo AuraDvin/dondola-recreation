@@ -1,8 +1,8 @@
 // ReSharper disable CppTooWideScope
 #include "Player.h"
 
-#include "Subject.h"
-#include "TextureLoader.h"
+#include "../core/Subject.h"
+#include "../TextureLoader.h"
 
 Player::Player(sf::RenderWindow &renderWindow,
                const std::string &texturePath,

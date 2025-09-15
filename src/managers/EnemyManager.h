@@ -3,8 +3,8 @@
 
 #include <unordered_set>
 
-#include "Enemy.h"
-#include "LinkedList.h"
+#include "../entities/Enemy.h"
+#include "../core/LinkedList.h"
 
 class EnemyManager : Observer {
 public:
