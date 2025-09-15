@@ -4,7 +4,6 @@
 Player::Player(sf::RenderWindow &renderWindow,
                const std::string &texturePath,
                Subject &gamePausedSubjectRef) : Observer(gamePausedSubjectRef){
-    window = &renderWindow;
     position = {0.5, 0.5};
     texture_ = sf::Texture(texturePath, false);
     rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
@@ -20,11 +19,11 @@ Player::~Player() {
 }
 
 
-void Player::render() const {
+void Player::render(sf::RenderWindow& rw) const {
     sprite_->setPosition(position);
     sprite_->setTextureRect(rect_);
     sprite_->setScale(sf::Vector2f(42.f/rect_.size.x, 42.f/rect_.size.y));
-    window->draw(*sprite_);
+    rw.draw(*this->sprite_);
 }
 
 void Player::update(const float dts) {

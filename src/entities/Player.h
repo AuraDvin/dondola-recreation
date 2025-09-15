@@ -15,7 +15,7 @@ public:
                     Subject &gamePausedSubjectRef);
     ~Player() override;
 
-    void render() const;
+    void render(sf::RenderWindow& rw) const;
 
     void update(float dts);
 
@@ -38,8 +38,6 @@ private:
     sf::IntRect rect_;
     sf::Texture texture_;
     sf::Sprite *sprite_;
-
-    sf::RenderWindow *window;
 
     AnimationPlayer animationPlayer_{};
 

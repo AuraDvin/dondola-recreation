@@ -113,7 +113,7 @@ void GameManager::render() {
     window_.clear(sf::Color::Black);
 
     //TODO: Render background
-    player_ptr->render();
+    player_ptr->render(window_);
     enemyManager->render(window_);
 
     // Set the camera position
