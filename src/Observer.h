@@ -16,7 +16,7 @@ class Subject;
 /// By default they throw logic error to require you overload them properly.
 class Observer {
 public:
-    explicit Observer(Subject *subject);
+    explicit Observer(Subject &subject);
 
     Observer() = default;
 

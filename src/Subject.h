@@ -9,6 +9,7 @@ class Subject {
 public:
     Subject() = default;
     void assignObserver(Observer &observer);
+    void removeObserver(Observer &observer);
     void send();
     void send(const std::string &message);
 private:
