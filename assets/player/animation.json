@@ -1,13 +1,22 @@
 {
-  "This is a test of a false json file": {
-    "frameCount": 1,
+  "idle": {
+    "frameCount": 2,
     "looping": true,
     "nextAnimation": "test",
     "frames": [
       {
-        "duration": 1000000,
+        "duration": 1,
         "rect": {
           "x": 0,
+          "y": 0,
+          "width": 712,
+          "height": 712
+        }
+      },
+      {
+        "duration": 1,
+        "rect": {
+          "x": 712,
           "y": 0,
           "width": 712,
           "height": 712
