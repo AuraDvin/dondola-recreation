@@ -1,0 +1,18 @@
+{
+  "This is a test of a false json file": {
+    "frameCount": 1,
+    "looping": true,
+    "nextAnimation": "test",
+    "frames": [
+      {
+        "duration": 1000000,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 712,
+          "height": 712
+        }
+      }
+    ]
+  }
+}
