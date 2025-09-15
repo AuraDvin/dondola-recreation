@@ -17,7 +17,7 @@ public:
 
     void render() const;
 
-    void update(float dt);
+    void update(float dts);
 
     sf::Vector2f getPosition() const { return position; }
 

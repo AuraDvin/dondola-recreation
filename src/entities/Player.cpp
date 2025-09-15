@@ -6,11 +6,12 @@ Player::Player(sf::RenderWindow &renderWindow,
                Subject &gamePausedSubjectRef) : Observer(gamePausedSubjectRef){
     window = &renderWindow;
     position = {0.5, 0.5};
-    rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
     texture_ = sf::Texture(texturePath, false);
+    rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
     sprite_ = new sf::Sprite(texture_, rect_);
     sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
     animationPlayer_ = AnimationPlayer(this->animationJsonPath);
+    animationPlayer_.playAnimation("idle");
 }
 
 Player::~Player() {
@@ -21,24 +22,21 @@ Player::~Player() {
 
 void Player::render() const {
     sprite_->setPosition(position);
-
-    /*TODO
-     * The framerate should be 100ms (maybe read delay from the json)
-     * figure out current animation time -> get current frame
-     * set current frame to the sprite -> animation :D
-     * (Plus) track which animation should be playing
-     * i.e idle, left, right, etc.
-     * that should be all
-     * I think only setting current frame from getting "nextRect" from animationplayer would suffice
-     */
+    sprite_->setTextureRect(rect_);
+    sprite_->setScale(sf::Vector2f(42.f/rect_.size.x, 42.f/rect_.size.y));
     window->draw(*sprite_);
 }
 
-void Player::update(const float dt) {
+void Player::update(const float dts) {
     if (gamePaused) return;
+
+    rect_ = animationPlayer_.updateAnimation(dts);
+
     const bool left = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
     const bool right = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
-    handleMovement(dt, left, right);
+
+    // This wil probably require you to also update which animation it should be playing or leaving the idle one, idk
+    handleMovement(dts, left, right);
 }
 
 void Player::handleMovement(const float dt, const bool left, const bool right) {
