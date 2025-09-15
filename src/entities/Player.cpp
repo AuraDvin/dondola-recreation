@@ -1,19 +1,15 @@
-// ReSharper disable CppTooWideScope
 #include "Player.h"
-
-#include "../core/Subject.h"
 #include "../TextureLoader.h"
 
 Player::Player(sf::RenderWindow &renderWindow,
                const std::string &texturePath,
-               Subject &gamePausedSubjectRef) {
+               Subject &gamePausedSubjectRef) : Observer(gamePausedSubjectRef){
     window = &renderWindow;
     position = {0.5, 0.5};
     rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
     texture_ = sf::Texture(texturePath, false);
     sprite_ = new sf::Sprite(texture_, rect_);
     sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
-    gamePausedSubjectRef.assignObserver(*this);
 }
 
 Player::~Player() {
@@ -24,7 +20,7 @@ Player::~Player() {
 
 void Player::render() const {
     sprite_->setPosition(position);
-    // double at = animationTime % 100;
+
     /*TODO
      * The framerate should be 100ms (maybe read delay from the json)
      * figure out current animation time -> get current frame

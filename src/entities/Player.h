@@ -3,11 +3,12 @@
 #include <cmath>
 #include <cstdint>
 
+#include "../AnimationPlayer.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "../core/Observer.h"
 
-class Player : Observer {
+class Player final : public Observer {
 public:
     explicit Player(sf::RenderWindow &renderWindow,
                     const std::string &texturePath,
@@ -38,6 +39,8 @@ private:
     sf::Sprite *sprite_;
 
     sf::RenderWindow *window;
+
+    AnimationPlayer animationPlayer_{};
 
     const float accelerationRate = 200.f;
     const float decelerationRate = 300.f;
