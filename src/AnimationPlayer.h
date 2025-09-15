@@ -29,7 +29,6 @@ struct Animation {
 
     Animation(const int frameCount, const bool looping, std::string nextAnimation) : frameCount(frameCount),
         looping(looping), nextAnimation(std::move(nextAnimation)) {
-        frames.resize(this->frameCount);
     }
 
     Animation() : frameCount(0), looping(false) {
@@ -57,11 +56,12 @@ public:
     /// Changes frame index and loops/changes animation based on time passed
     /// Updates a local sinceLastTime variable with deltaTime. If deltaTime is very large
     /// it will at most update to the next (1) frame per function call!
-    void updateAnimation(double deltaTime);
+    /// @return returns the rect of the next frame to set for sprite to use
+    sf::Rect<int> updateAnimation(double deltaTimeSeconds);
 
 private:
     uint32_t currentFrameIndex = 0;
-    double sinceLastFrame = 0.0;
+    double sinceLastFrameSeconds = 0.0;
     std::string currentAnimationName;
     Animation currentAnimation;
     std::map<std::string, Animation> animations;

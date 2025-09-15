@@ -1,11 +1,12 @@
 #include "AnimationPlayer.h"
 #include <string>
 #include "core/jsonReader.h"
+#include "core/MyDebugger.h"
 
 AnimationPlayer::AnimationPlayer(const std::string &jsonAnimationPath) {
     jsonReader reader(jsonAnimationPath);
     try {
-        for (const auto& json : reader.data.items()) {
+        for (const auto &json: reader.data.items()) {
             std::string name = json.key();
             std::string nextAnimName;
             int frameCount;
@@ -21,15 +22,16 @@ AnimationPlayer::AnimationPlayer(const std::string &jsonAnimationPath) {
             for (auto frame: json.value().at("frames")) {
                 float duration;
                 int x, y, width, height;
-                frame.at("duration").get_to(duration);
-                frame.at("rect").at("x").get_to(x);
-                frame.at("rect").at("y").get_to(y);
-                frame.at("rect").at("width").get_to(width);
-                frame.at("rect").at("height").get_to(height);
+                duration = frame.at("duration").template get<float>();
+                x = frame.at("rect").at("x").template get<int>();
+                y = frame.at("rect").at("y").template get<int>();
+                width = frame.at("rect").at("width").template get<int>();
+                height = frame.at("rect").at("height").template get<int>();
                 auto position = sf::Vector2i(x, y);
                 auto size = sf::Vector2i(width, height);
                 // Implicit makes a Frame object
                 animation.frames.emplace_back(duration, sf::IntRect(position, size));
+                debugger::print_debug(x, ", ", y, ", ", width, ",", height);
             }
 
             animations.emplace(name, animation);
@@ -62,20 +64,24 @@ void AnimationPlayer::playAnimation(const std::string &animationName) {
     currentAnimation = it->second;
 }
 
-void AnimationPlayer::updateAnimation(const double deltaTime) {
-    sinceLastFrame += deltaTime;
+sf::Rect<int> AnimationPlayer::updateAnimation(const double deltaTimeSeconds) {
+    sinceLastFrameSeconds += deltaTimeSeconds;
     const float currentFrameDuration = currentAnimation.frames[currentFrameIndex].duration;
-    if (sinceLastFrame < currentFrameDuration) {
-        return;
+    if (sinceLastFrameSeconds <= currentFrameDuration) {
+        // Return current frame
+        return currentAnimation.frames[currentFrameIndex].rect;
     }
-    sinceLastFrame = std::max(sinceLastFrame - currentFrameDuration, 0.0);
+
+    sinceLastFrameSeconds -= currentFrameDuration;
+    if (sinceLastFrameSeconds < 0) sinceLastFrameSeconds = 0;
     currentFrameIndex++;
-    if (currentFrameIndex < currentAnimation.frameCount) {
-        return;
+    if (currentFrameIndex >= currentAnimation.frameCount) {
+        currentFrameIndex = FIRST_FRAME;
+        if (!currentAnimation.looping) {
+            currentAnimationName = currentAnimation.nextAnimation;
+            currentAnimation = animations.at(currentAnimationName);
+        }
     }
-    currentFrameIndex = FIRST_FRAME;
-    if (!currentAnimation.looping) {
-        currentAnimationName = currentAnimation.nextAnimation;
-        currentAnimation = animations.at(currentAnimationName);
-    }
+    // Return new frame
+    return currentAnimation.frames[currentFrameIndex].rect;
 }
