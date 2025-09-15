@@ -3,8 +3,8 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <vector>
 
-#include "managers/GameManager.h"
 #include "SFML/Graphics/Rect.hpp"
 
 struct Frame {

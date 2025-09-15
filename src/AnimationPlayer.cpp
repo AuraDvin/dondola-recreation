@@ -1,12 +1,8 @@
-//
-// Created by aura on 8. 09. 25.
-//
-
 #include "AnimationPlayer.h"
 
 #include "core/jsonReader.h"
 
-AnimationPlayer::AnimationPlayer(const std::string &jsonAnimationPath): currentFrameIndex(0), sinceLastFrame(0) {
+AnimationPlayer::AnimationPlayer(const std::string &jsonAnimationPath) {
     jsonReader reader(jsonAnimationPath);
     for (auto json = reader.json.begin(); json != reader.json.end(); ++json) {
         std::string name = json.key();
@@ -55,7 +51,6 @@ void AnimationPlayer::playAnimation(const std::string &animationName) {
 }
 
 void AnimationPlayer::updateAnimation(const double deltaTime) {
-    if (paused) return;
     sinceLastFrame += deltaTime;
     if (currentFrameIndex < FIRST_FRAME) {
         currentFrameIndex = FIRST_FRAME; // do not go out of bounds, just in case
