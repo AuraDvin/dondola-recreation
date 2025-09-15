@@ -10,6 +10,7 @@ Player::Player(sf::RenderWindow &renderWindow,
     texture_ = sf::Texture(texturePath, false);
     sprite_ = new sf::Sprite(texture_, rect_);
     sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
+    animationPlayer_ = AnimationPlayer(this->animationJsonPath);
 }
 
 Player::~Player() {

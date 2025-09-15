@@ -28,6 +28,7 @@ public:
     void onNotify() override;
 
 private:
+    const std::string animationJsonPath = "assets/player/animation.json";
     bool gamePaused = false;
 
     uint8_t health = 3;
