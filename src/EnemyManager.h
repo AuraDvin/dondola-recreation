@@ -6,9 +6,9 @@
 #include "Enemy.h"
 #include "LinkedList.h"
 
-class EnemyManager {
+class EnemyManager : Observer {
 public:
-    EnemyManager();
+    EnemyManager(Subject &gamePausedSubjRef);
 
     ~EnemyManager();
 
@@ -20,11 +20,16 @@ public:
 
     uint32_t getID();
 private:
+    bool gamePaused;
     float spawnPeriodSeconds = 2.f;
     float accumulatedTime = 0.f;
+
+    void onNotify() override;
+
     std::unordered_set<uint32_t> notAllowedIds;
     LinkedList<Enemy> enemyList;
     Enemy *baseEnemy;
+
 };
 
 

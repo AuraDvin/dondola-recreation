@@ -32,7 +32,7 @@ public:
     void runCurrentScene();
 
 private:
-
+    bool pausePressedOnLastUpdate = false;
     void updateCamera(float deltaTime);
 
     sf::RenderWindow window_;
@@ -81,6 +81,7 @@ private:
         &GameManager::overRender
     };
 
+    void handlePause();
 
 };
 

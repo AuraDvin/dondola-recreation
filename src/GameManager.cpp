@@ -4,8 +4,9 @@
 #include <random>
 
 #include "TextureLoader.h"
+#include "GamePaused.h"
 
-const int UNLIMITED_FRAMERATE = 0;
+constexpr int UNLIMITED_FRAMERATE = 0;
 
 void GameManager::updateCamera(const float deltaTime) {
     // ReSharper disable once CppTooWideScopeInitStatement
@@ -49,7 +50,9 @@ GameManager::GameManager() : window_(sf::VideoMode({1280u, 720u}), gameName) {
     try {
         player_ptr = new Player(
             window_,
-            "assets/square.png");
+            "assets/square.png",
+            gamePausedSubject);
+
     } catch (const std::exception &e) {
         // Always debug on exception
         debugger::debug_mode = true;
@@ -62,7 +65,7 @@ GameManager::GameManager() : window_(sf::VideoMode({1280u, 720u}), gameName) {
     }
 
     Enemy::init(player_ptr, window_);
-    enemyManager = new EnemyManager();
+    enemyManager = new EnemyManager(gamePausedSubject);
 
     // set first update
     lastUpdate_ = clock_.getElapsedTime();
@@ -82,6 +85,8 @@ void GameManager::update() {
     const sf::Time currentTime = clock_.getElapsedTime();
     const float deltaTime = (currentTime - lastUpdate_).asSeconds();
     lastUpdate_ = currentTime;
+
+    handlePause();
 
     // Player update
     player_ptr->update(deltaTime);
@@ -133,6 +138,19 @@ void GameManager::overUpdate() {
 }
 
 void GameManager::overRender() {
+}
+
+void GameManager::handlePause() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+        if (!pausePressedOnLastUpdate) {
+            pausePressedOnLastUpdate = true;
+            // gamePausedSubject.send();
+        }
+    } else if (pausePressedOnLastUpdate) {
+        pausePressedOnLastUpdate = false;
+        /// Only sending on letting go of pause
+        gamePausedSubject.send();
+    }
 }
 
 void GameManager::goToScene(const uint32_t sceneIdx) {

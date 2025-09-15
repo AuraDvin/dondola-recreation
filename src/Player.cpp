@@ -1,20 +1,24 @@
 // ReSharper disable CppTooWideScope
 #include "Player.h"
 
+#include "Subject.h"
 #include "TextureLoader.h"
 
 Player::Player(sf::RenderWindow &renderWindow,
-               const std::string &texturePath) {
+               const std::string &texturePath,
+               Subject &gamePausedSubjectRef) {
     window = &renderWindow;
     position = {0.5, 0.5};
     rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
     texture_ = sf::Texture(texturePath, false);
     sprite_ = new sf::Sprite(texture_, rect_);
     sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
+    gamePausedSubjectRef.assignObserver(*this);
 }
 
 Player::~Player() {
     delete sprite_;
+    Observer::~Observer();
 }
 
 
@@ -34,13 +38,10 @@ void Player::render() const {
 }
 
 void Player::update(const float dt) {
-    // maxSpeedSquare is used for comparison,
-    // apparently it's faster
-    animationTime += dt;
+    if (gamePaused) return;
     const bool left = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
     const bool right = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
     handleMovement(dt, left, right);
-
 }
 
 void Player::handleMovement(const float dt, const bool left, const bool right) {
@@ -83,4 +84,9 @@ void Player::handleMovement(const float dt, const bool left, const bool right) {
     const sf::Vector2f rotated = playerVelocity.rotatedBy(phi);
 
     position += rotated * dt;
+}
+
+
+void Player::onNotify() {
+    gamePaused = !gamePaused;
 }

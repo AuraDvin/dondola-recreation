@@ -1,8 +1,11 @@
 #include "EnemyManager.h"
 #include "prg.h"
+#include "Subject.h"
 
 
-EnemyManager::EnemyManager() : enemyList(LinkedList<Enemy>()), baseEnemy(new Enemy(0, "assets/square.png")){
+EnemyManager::EnemyManager(Subject &gamePausedSubjectRef) : enemyList(LinkedList<Enemy>()), baseEnemy(new Enemy(0, "assets/square.png")){
+    /// When we're going to be making new Enemy objects we will need to pass it along.
+    gamePausedSubjectRef.assignObserver(*this);
 }
 
 EnemyManager::~EnemyManager() {
@@ -14,15 +17,17 @@ EnemyManager::~EnemyManager() {
 // * Update
 
 void EnemyManager::update(const float dt) {
+    if (gamePaused) return;
+
     for (accumulatedTime += dt; accumulatedTime >= spawnPeriodSeconds; accumulatedTime -= spawnPeriodSeconds) {
         spawnEnemy();
     }
 
-    for (const Node<Enemy> *i = enemyList.getStart(); i != nullptr;) {
+    for (Node<Enemy> *i = enemyList.getStart(); i != nullptr;) {
         if (i->val.isOutOfBounds()) {
             // id is now legal
             notAllowedIds.erase(i->val.getID());
-            const Node<Enemy> *tmp = i->next;
+            Node<Enemy> *tmp = i->next;
             enemyList.remove(i->val);
             i = tmp;
             continue;
@@ -56,4 +61,8 @@ uint32_t EnemyManager::getID() {
 
     notAllowedIds.insert(id);
     return id;
+}
+
+void EnemyManager::onNotify() {
+    gamePaused ^= true;
 }
