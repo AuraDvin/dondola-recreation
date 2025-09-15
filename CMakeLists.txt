@@ -27,7 +27,6 @@ add_executable(dondolagame_recreation main.cpp
         src/managers/EnemyManager.cpp
         src/core/prg.h
         src/core/MyDebugger.h
-        src/core/jsonReader.cpp
         src/core/jsonReader.h
         src/AnimationPlayer.cpp
         src/AnimationPlayer.h
