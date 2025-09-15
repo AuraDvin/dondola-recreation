@@ -5,10 +5,13 @@
 
 class jsonReader {
     public:
-    nlohmann::json json;
+    nlohmann::json data;
     explicit jsonReader(const std::string &jsonPath) {
-        std::ifstream file(jsonPath, std::ifstream::binary);
-        file >> json;
+        std::ifstream file(jsonPath);
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open json file: \"" + jsonPath + "\"");
+        }
+        file >> data;
         file.close();
     }
 };

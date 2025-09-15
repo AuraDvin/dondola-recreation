@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <cstdint>
 
 #include "SFML/Graphics/Rect.hpp"
 
@@ -59,7 +60,7 @@ public:
     void updateAnimation(double deltaTime);
 
 private:
-    int currentFrameIndex = 0;
+    uint32_t currentFrameIndex = 0;
     double sinceLastFrame = 0.0;
     std::string currentAnimationName;
     Animation currentAnimation;
