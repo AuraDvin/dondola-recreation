@@ -24,16 +24,13 @@ void EnemyManager::update(const float dt) {
         spawnEnemy();
     }
 
-    for (Node<Enemy> *i = enemyList.getStart(); i != nullptr;) {
-        if (i->val.isOutOfBounds()) {
-            // id is now legal
-            notAllowedIds.erase(i->val.getID());
-            Node<Enemy> *tmp = i->next;
-            enemyList.remove(i->val);
-            i = tmp;
+    for (const Node<Enemy> *enemyNode = enemyList.getStart(); enemyNode != nullptr;) {
+        if (enemyNode->val.isOutOfBounds()) {
+            notAllowedIds.erase(enemyNode->val.getID());
+            enemyNode = enemyList.remove(enemyNode->val); // remove returns next pointer
             continue;
         }
-        i = i->next;
+        enemyNode = enemyNode->next;
     }
 
     // iterate and update all enemies

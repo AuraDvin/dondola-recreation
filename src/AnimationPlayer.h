@@ -1,5 +1,5 @@
-#ifndef DONDOLAGAME_RECREATION_ANIMATIONPLAYER_H
-#define DONDOLAGAME_RECREATION_ANIMATIONPLAYER_H
+#ifndef DONDOLAGAME_RECREATION_ANIMATION_PLAYER_H
+#define DONDOLAGAME_RECREATION_ANIMATION_PLAYER_H
 #include <map>
 #include <string>
 #include <utility>
@@ -16,7 +16,7 @@ struct Frame {
     }
 
     Frame() : duration(0) {
-    };
+    }
 };
 
 constexpr int FIRST_FRAME = 0;
@@ -68,4 +68,4 @@ private:
 };
 
 
-#endif //DONDOLAGAME_RECREATION_ANIMATIONPLAYER_H
+#endif //DONDOLAGAME_RECREATION_ANIMATION_PLAYER_H

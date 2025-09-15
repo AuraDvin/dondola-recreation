@@ -1,7 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include <cstdint>
-#include <iostream>
 
 template<typename T>
 struct Node {
@@ -28,7 +27,7 @@ public:
         return true;
     }
 
-    void add(T x) {
+    void add(const T x) {
         length++;
         if (start == nullptr) {
             start = new Node<T>{x, nullptr};
@@ -53,15 +52,15 @@ public:
         return nullptr;
     }
 
-    void remove(T x) {
-        if (start == nullptr) return;
+    Node<T>* remove(const T x) {
+        if (start == nullptr) return nullptr;
 
         if (start->val == x) {
             const Node<T> *tmp = start;
             start = start->next;
             delete tmp;
             length--;
-            return;
+            return start;
         }
 
         Node<T> *prev = nullptr;
@@ -71,11 +70,12 @@ public:
             current = current->next;
         }
 
-        if (current == nullptr) return; // Not found
+        if (current == nullptr) return nullptr; // Not found
 
         prev->next = current->next;
         delete current;
         length--;
+        return prev->next;
     }
 
     Node<T> *getStart() { return start; }

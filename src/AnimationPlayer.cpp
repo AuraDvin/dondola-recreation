@@ -22,11 +22,11 @@ AnimationPlayer::AnimationPlayer(const std::string &jsonAnimationPath) {
             for (auto frame: json.value().at("frames")) {
                 float duration;
                 int x, y, width, height;
-                duration = frame.at("duration").template get<float>();
-                x = frame.at("rect").at("x").template get<int>();
-                y = frame.at("rect").at("y").template get<int>();
-                width = frame.at("rect").at("width").template get<int>();
-                height = frame.at("rect").at("height").template get<int>();
+                duration = frame.at("duration").get<float>();
+                x = frame.at("rect").at("x").get<int>();
+                y = frame.at("rect").at("y").get<int>();
+                width = frame.at("rect").at("width").get<int>();
+                height = frame.at("rect").at("height").get<int>();
                 auto position = sf::Vector2i(x, y);
                 auto size = sf::Vector2i(width, height);
                 // Implicit makes a Frame object

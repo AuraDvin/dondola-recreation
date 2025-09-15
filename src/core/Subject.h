@@ -10,8 +10,8 @@ public:
     Subject() = default;
     void assignObserver(Observer &observer);
     void removeObserver(Observer &observer);
-    void send();
-    void send(const std::string &message);
+    void send() const;
+    void send(const std::string &message) const;
 private:
     std::vector<Observer*> observers;
 

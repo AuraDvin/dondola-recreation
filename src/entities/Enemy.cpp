@@ -2,8 +2,8 @@
 #include "../core/prg.h"
 
 void Enemy::setSpawn() {
-    std::uniform_real_distribution<> randomAngle(0.0, 2.0 * M_PI);
-    std::uniform_real_distribution<> randomDistance(400.0, 600.0);
+    std::uniform_real_distribution randomAngle(0.0, 2.0 * M_PI);
+    std::uniform_real_distribution randomDistance(400.0, 600.0);
 
     float phi = 0.0;
     do {

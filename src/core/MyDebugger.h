@@ -6,19 +6,16 @@
 
 namespace debugger {
     inline bool debug_mode = false;
+    void print_debug_impl() {
+    }
 
-    namespace {
-        void print_debug_impl() {
-        }
-
-        /// Private function for implementation of the print_debug function
-        /// Prints out first, then recursively calls itself until it runs out of arguments
-        /// Please call debugger::print_debug(args) function for debugging
-        template<typename T, typename... Args>
-        void print_debug_impl(T first, Args... args) {
-            std::cout << first << " ";
-            print_debug_impl(args...);
-        }
+    /// Private function for implementation of the print_debug function
+    /// Prints out first, then recursively calls itself until it runs out of arguments
+    /// Please call debugger::print_debug(args) function for debugging
+    template<typename T, typename... Args>
+    void print_debug_impl(T first, Args... args) {
+        std::cout << first << " ";
+        print_debug_impl(args...);
     }
 
     /// Prints debug statements depending on launch arguments, if no --debug is present at program launch, no data will be printed.

@@ -37,7 +37,7 @@ public:
     static void init(Player *player_ref_ptr, sf::RenderWindow &rw);
     static bool isUninitialized() { return player_ptr == nullptr || render_window_ == nullptr; }
 
-    bool operator==(const Enemy &other) const { return id == other.id; }
+    bool operator==(const Enemy &other) const { return this->id == other.id; }
     bool operator!=(const Enemy &other) const { return !operator==(other); }
 
     Enemy(uint32_t id, const Enemy &copy);

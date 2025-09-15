@@ -15,15 +15,14 @@ void Subject::removeObserver(Observer &observer) {
     observers.erase(it);
 }
 
-void Subject::send(const std::string &message) {
+void Subject::send(const std::string &message) const {
     for (Observer *observer : observers) {
         observer->onNotify(message);
     }
 }
 
-void Subject::send() {
+void Subject::send() const {
     for (Observer *observer : observers) {
-
         observer->onNotify();
     }
 }
