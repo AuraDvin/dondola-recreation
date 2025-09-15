@@ -83,20 +83,20 @@ GameManager::~GameManager() {
 void GameManager::update() {
     // Calculate deltaTime in seconds
     const sf::Time currentTime = clock_.getElapsedTime();
-    const float deltaTime = (currentTime - lastUpdate_).asSeconds();
+    const float deltaTimeSeconds = (currentTime - lastUpdate_).asSeconds();
     lastUpdate_ = currentTime;
 
     handlePause();
 
     // Player update
-    player_ptr->update(deltaTime);
+    player_ptr->update(deltaTimeSeconds);
 
     // TODO: lerp camera to player
     // current behavior is a bit "swing-y" but its alright for now
     // updateCamera(deltaTime);
 
     // Update enemies
-    enemyManager->update(deltaTime);
+    enemyManager->update(deltaTimeSeconds);
 
     while (const std::optional<sf::Event> ev = window_.pollEvent()) {
         if (sf::Event event = ev.value(); event.is<sf::Event::Closed>())
