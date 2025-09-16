@@ -33,8 +33,9 @@ add_executable(dondolagame_recreation main.cpp
         src/TextureLoader.h
         src/core/Observer.h
         src/core/Subject.h
-        src/core/SubjectObserver.cpp
-        src/GamePaused.h)
+        src/core/Subject.cpp
+        src/GamePaused.h
+        src/core/Observer.cpp)
 target_link_libraries(dondolagame_recreation PRIVATE SFML::Graphics)
 
 # Create a custom command to copy the assets

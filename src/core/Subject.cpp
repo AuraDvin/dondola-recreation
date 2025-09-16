@@ -2,10 +2,6 @@
 #include "Observer.h"
 #include <algorithm>
 
-Observer::Observer(Subject &subject) {
-    subject.assignObserver(*this);
-}
-
 void Subject::assignObserver(Observer &observer) {
     observers.push_back(&observer);
 }
