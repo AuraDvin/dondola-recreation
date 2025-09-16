@@ -51,7 +51,8 @@ public:
         }
         return nullptr;
     }
-
+    /// @return Returns pointer to the last pointer before pointer with value passed
+    /// @param x value to search and remove from list
     Node<T> *remove(const T x) {
         if (start == nullptr) return nullptr;
 
@@ -75,7 +76,7 @@ public:
         prev->next = current->next;
         delete current;
         length--;
-        return prev->next;
+        return prev;
     }
 
     Node<T> *getStart() { return start; }
