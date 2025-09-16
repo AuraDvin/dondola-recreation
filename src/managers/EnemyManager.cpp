@@ -12,10 +12,6 @@ EnemyManager::~EnemyManager() {
     delete baseEnemy;
 }
 
-//TODO:
-// * Render
-// * Update
-
 void EnemyManager::update(const float dt) {
     if (gamePaused) return;
 
@@ -23,17 +19,13 @@ void EnemyManager::update(const float dt) {
         spawnEnemy();
     }
 
-    for (const Node<Enemy> *enemyNode = enemyList.getStart(); enemyNode != nullptr;) {
-        if (enemyNode->val.isOutOfBounds()) {
+    for (Node<Enemy> *enemyNode = enemyList.getStart(); enemyNode != nullptr; enemyNode = enemyNode->next) {
+        enemyNode->val.update(dt);
+        if (enemyNode->val.checkOutOfBounds()) {
             notAllowedIds.erase(enemyNode->val.getID());
-            enemyNode = enemyList.remove(enemyNode->val); // remove returns next pointer
-            continue;
+            enemyNode = enemyList.remove(enemyNode->val);
         }
-        enemyNode = enemyNode->next;
     }
-
-    // iterate and update all enemies
-    enemyList.update(dt);
 }
 
 void EnemyManager::render(sf::RenderWindow &window) {
