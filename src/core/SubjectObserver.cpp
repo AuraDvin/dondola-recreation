@@ -12,7 +12,8 @@ void Subject::assignObserver(Observer &observer) {
 
 void Subject::removeObserver(Observer &observer) {
     const auto it = std::remove(observers.begin(), observers.end(), &observer);
-    observers.erase(it);
+    // removes unallowed trailing pointers
+    observers.erase(it, observers.end());
 }
 
 void Subject::send(const std::string &message) const {
