@@ -22,8 +22,9 @@ void Enemy::setSpawn() {
     direction = playerPos - sprite_->getPosition();
 }
 
-void Enemy::checkInBounds() {
-    outOfBounds = (player_ptr->getPosition() - sprite_->getPosition()).lengthSquared() >= maxDist;
+bool Enemy::checkOutOfBounds() const {
+    if (player_ptr == nullptr) return true;
+    return (player_ptr->getPosition() - sprite_->getPosition()).lengthSquared() >= maxDist;
 }
 
 void Enemy::init(Player *player_ref_ptr) {
@@ -59,7 +60,6 @@ void Enemy::update(const float dt) {
     }
 
     sprite_->setPosition(sprite_->getPosition() + velocity * dt);
-    checkInBounds();
 }
 
 void Enemy::render(sf::RenderWindow &window) const {
