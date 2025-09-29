@@ -35,7 +35,7 @@ private:
     sf::Vector2f position;
     sf::Vector2f velocity;
 
-    sf::Vector2f collisionBoxWidthHeight{42.f,42.f};
+    sf::Vector2f collisionBoxDimensions{42.f,42.f};
     sf::IntRect textureRect;
     sf::Sprite *sprite;
 
