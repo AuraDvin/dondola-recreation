@@ -33,12 +33,13 @@ private:
 
     uint8_t health = 3;
     sf::Vector2f position;
-    sf::Vector2f playerVelocity;
+    sf::Vector2f velocity;
 
-    sf::IntRect rect_;
-    sf::Sprite *sprite_;
+    sf::Vector2f collisionBoxWidthHeight{42.f,42.f};
+    sf::IntRect textureRect;
+    sf::Sprite *sprite;
 
-    AnimationPlayer animationPlayer_{};
+    AnimationPlayer animationPlayer{};
 
     const float accelerationRate = 200.f;
     const float decelerationRate = 300.f;

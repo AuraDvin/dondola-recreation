@@ -4,30 +4,30 @@
 Player::Player(
     Subject &gamePausedSubjectRef) : Observer(gamePausedSubjectRef) {
     position = {0.5, 0.5};
-    rect_ = sf::IntRect({0u, 0u}, {42u, 42u});
-    sprite_ = new sf::Sprite(*Texture::spriteSheet, rect_);
-    sprite_->setOrigin(sf::Vector2f(rect_.size) / 2.f);
-    animationPlayer_ = AnimationPlayer(this->animationJsonPath);
-    animationPlayer_.playAnimation("idle");
+    textureRect = sf::IntRect({0u, 0u}, {42u, 42u});
+    sprite = new sf::Sprite(*Texture::spriteSheet, textureRect);
+    sprite->setOrigin(sf::Vector2f(textureRect.size) / 2.f);
+    animationPlayer = AnimationPlayer(this->animationJsonPath);
+    animationPlayer.playAnimation("idle");
 }
 
 Player::~Player() {
-    delete sprite_;
+    delete sprite;
     Observer::~Observer();
 }
 
 
 void Player::render(sf::RenderWindow &rw) const {
-    sprite_->setPosition(position);
-    sprite_->setTextureRect(rect_);
-    sprite_->setScale(sf::Vector2f(42.f / rect_.size.x, 42.f / rect_.size.y));
-    rw.draw(*this->sprite_);
+    sprite->setPosition(position);
+    sprite->setTextureRect(textureRect);
+    sprite->setScale(sf::Vector2f(42.f / textureRect.size.x, 42.f / textureRect.size.y));
+    rw.draw(*this->sprite);
 }
 
 void Player::update(const float dts) {
     if (gamePaused) return;
 
-    rect_ = animationPlayer_.updateAnimation(dts);
+    textureRect = animationPlayer.updateAnimation(dts);
 
     const bool left = isKeyPressed(sf::Keyboard::Key::A) || isKeyPressed(sf::Keyboard::Key::Left);
     const bool right = isKeyPressed(sf::Keyboard::Key::D) || isKeyPressed(sf::Keyboard::Key::Right);
@@ -48,32 +48,32 @@ void Player::handleMovement(const float dt, const bool left, const bool right) {
     }
 
     // Update velocity based on acceleration
-    playerVelocity += acceleration * dt;
+    velocity += acceleration * dt;
 
     // Apply deceleration if no input
     if (!(left || right)) {
-        if (playerVelocity.x > 0.f) {
-            playerVelocity.x -= decelerationRate * dt;
-            if (playerVelocity.x < 0.f) playerVelocity.x = 0.f;
-        } else if (playerVelocity.x < 0.f) {
-            playerVelocity.x += decelerationRate * dt;
-            if (playerVelocity.x > 0.f) playerVelocity.x = 0.f;
+        if (velocity.x > 0.f) {
+            velocity.x -= decelerationRate * dt;
+            if (velocity.x < 0.f) velocity.x = 0.f;
+        } else if (velocity.x < 0.f) {
+            velocity.x += decelerationRate * dt;
+            if (velocity.x > 0.f) velocity.x = 0.f;
         }
-        if (playerVelocity.y > 0.f) {
-            playerVelocity.y -= decelerationRate * dt;
-            if (playerVelocity.y < 0.f) playerVelocity.y = 0.f;
-        } else if (playerVelocity.y < 0.f) {
-            playerVelocity.y += decelerationRate * dt;
-            if (playerVelocity.y > 0.f) playerVelocity.y = 0.f;
+        if (velocity.y > 0.f) {
+            velocity.y -= decelerationRate * dt;
+            if (velocity.y < 0.f) velocity.y = 0.f;
+        } else if (velocity.y < 0.f) {
+            velocity.y += decelerationRate * dt;
+            if (velocity.y > 0.f) velocity.y = 0.f;
         }
     }
 
     // Limit speed
-    if (playerVelocity.lengthSquared() > maxSpeedSquared) {
-        playerVelocity = playerVelocity.normalized() * maxSpeed;
+    if (velocity.lengthSquared() > maxSpeedSquared) {
+        velocity = velocity.normalized() * maxSpeed;
     }
 
-    const sf::Vector2f rotated = playerVelocity.rotatedBy(phi);
+    const sf::Vector2f rotated = velocity.rotatedBy(phi);
 
     position += rotated * dt;
 }
